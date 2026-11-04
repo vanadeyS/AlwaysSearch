@@ -1,11 +1,31 @@
-# ⚡ r34_gallery (umaZhickR34)
+# umaZhickR34
 
-Консольный клиент Rule34 для Termux (Android). Автоматически качает арты и пакует в зашифрованный AES-256 архив 7z.
+Локальный клиент Rule34 с шифрованным хранилищем 7z для Windows и Termux.
 
-## Установка
+## Windows
 
-Вставь в Termux и нажми Enter:
+Запустите PowerShell и выполните:
+
+```powershell
+irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex; r34
+```
+
+Установщик загружает актуальную версию, Python-библиотеки, 7-Zip и SoX. После установки программа запускается командой `r34`. Если команда не находится, закройте и снова откройте терминал.
+
+## Termux
 
 ```bash
-curl -sL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/r34_gallery.py -o ~/r34_gallery.py && python -m py_compile ~/r34_gallery.py && echo "python ~/r34_gallery.py" > $PREFIX/bin/r34 && chmod +x $PREFIX/bin/r34 && r34
+pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh -o ~/install_termux.sh && bash ~/install_termux.sh && r34
 ```
+
+Дальнейший запуск:
+
+```bash
+r34
+```
+
+## Обновления
+
+Программа проверяет обновления при запуске. Ручная проверка — команда `update` внутри программы.
+
+Файлы и настройки хранятся локально. Архив на Windows: `Документы\umaZhickR34\Bible.7z`; на Android: `Documents/umaZhickR34/Bible.7z`.
