@@ -4,10 +4,10 @@
 
 ## Windows
 
-Запустите PowerShell и выполните:
+Выполните в командной строке или PowerShell:
 
 ```powershell
-irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex; r34
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"; r34
 ```
 
 Установщик загружает актуальную версию, Python-библиотеки, 7-Zip и SoX. После установки программа запускается командой `r34`. Если команда не находится, закройте и снова откройте терминал.
