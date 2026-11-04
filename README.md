@@ -7,5 +7,5 @@
 Вставь в Termux и нажми Enter:
 
 ```bash
-curl -sL https://tinyurl.com/r34vanadey -o ~/r34_gallery.py && python -m py_compile ~/r34_gallery.py && echo "python ~/r34_gallery.py" > $PREFIX/bin/r34 && chmod +x $PREFIX/bin/r34 && r34
+curl -sL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/r34_gallery.py -o ~/r34_gallery.py && python -m py_compile ~/r34_gallery.py && echo "python ~/r34_gallery.py" > $PREFIX/bin/r34 && chmod +x $PREFIX/bin/r34 && r34
 ```
