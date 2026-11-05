@@ -1,4 +1,4 @@
-# umaZhickR34
+# skidbidi34
 
 Локальный клиент Rule34 с шифрованным хранилищем 7z для Windows и Termux.
 
