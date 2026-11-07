@@ -1,78 +1,137 @@
 # umaZhickR34
 
-Консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
+[ 🇷🇺 Русский ](#-русский) | [ 🇬🇧 English ](#-english)
 
-## Возможности
+---
 
-- Загрузка по тегам, авторам (`artist <имя>`) и франшизам.
-- Поддержка параметров выборки: лимит (`all` или количество) и минимальный рейтинг (`score <N>`).
-- Фильтрация контента: отключение AI-генераций (`ai on/off`) и управление загрузкой видео (`video on/off`).
-- Локальная дедупликация: исключение повторных загрузок по базе истории и хешам.
-- Автоматическая шифрация в единый контейнер 7z (пароль по умолчанию: `v1zhik`).
-- Автодополнение тегов в реальном времени при вводе.
-- Бесшовное OTA-обновление при запуске через GitHub Gist.
-- Полная автономность: отсутствие внешних серверов, телеметрии и аналитики.
+<a id="-русский"></a>
+## 🇷🇺 Русский
 
-## Системные требования
+Консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 и Gelbooru с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
 
-- **Windows**: Windows 10/11 (64-bit), PowerShell 5.1+. Установщик автоматически подтягивает Python 3.11 и 7-Zip через `winget`, если они отсутствуют.
-- **Android**: Termux (рекомендуется сборка из F-Droid), Android 8.0+. Доступ к хранилищу запрашивается скриптом (`termux-setup-storage`).
+### Возможности
 
-## Быстрая установка
+- **Поиск**: по одиночным и составным тегам (`oguri_cap solo ass 20`), художникам (`artist <имя>`) и франшизам.
+- **Источники**: быстрое переключение между базами Rule34 и Gelbooru (`src [r34|gel]`).
+- **Черный список (Blacklist)**: отсечение нежелательного контента по тегам (`bl on/off/add/del/list/clear`, по умолчанию блокирует futanari, guro, scat).
+- **Режимы видео**: выгрузка только видеофайлов и анимаций (`video only`), совмещенный режим (`video on`) или только статичные арты (`video off`).
+- **Фильтрация контента**: отсечение AI-генераций (`ai on/off`) и минимальный порог рейтинга (`score <N>`).
+- **Автоматическое шифрование**: сохранение в единый зашифрованный контейнер 7z (`-mhe=on`, пароль по умолчанию: `v1zhik`).
+- **Локальная дедупликация**: автоматический пропуск ранее скачанных постов по внутренней базе ID.
+- **Автодополнение**: интерактивные подсказки тегов по клавише `TAB`.
+- **Бесшовное OTA-обновление**: проверка и применение обновлений при запуске.
 
-### Windows
+### Быстрая установка
 
-Выполните в PowerShell (или Windows Terminal):
+#### Windows
+
+Выполните в PowerShell:
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"
 ```
 
-Команда `r34` регистрируется в пользовательском PATH и доступна сразу.
+Команда `r34` регистрируется в системе и доступна из любой консоли.
 
-### Android (Termux)
+#### Android (Termux)
 
-Выполните в консоли Termux:
+Выполните в Termux:
 
 ```bash
 pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh -o ~/install_termux.sh && bash ~/install_termux.sh
 ```
 
-Запуск осуществляется командой `r34`.
-
-## Использование и синтаксис
-
-После запуска программы введите тег или команду:
-
-```text
-r34> oguri_cap_(umamusume) 20
-r34> artist rensuke all
-r34> score 50
-```
+Запуск: `r34`.
 
 ### Таблица команд
 
 | Команда | Описание |
 |---|---|
-| `<тег> [N\|all]` | Загрузить посты по тегу (количество или все доступные) |
-| `artist <имя> [N\|all]` | Поиск и сохранение постов указанного автора |
-| `score <N>` | Установить порог минимального рейтинга |
-| `count <N>` | Установить размер пачки по умолчанию |
-| `ai on/off` | Включить/выключить фильтрацию сгенерированных артов |
-| `video on/off` | Включить/выключить загрузку видео (MP4/WebM) |
-| `list` | Показать список файлов внутри защищенного контейнера |
-| `set` | Меню настроек (язык, пароль архива, API Hook, сброс) |
-| `update` | Принудительная проверка и установка обновлений |
-| `clean all` | Очистка временных файлов и рабочей папки |
-| `clear` / `cls` | Очистить экран консоли |
-| `exit` / `q` | Завершить работу программы |
+| `<тег(и)> [N\|all]` | Скачать посты по тегам (например: `oguri_cap solo ass 20`) |
+| `artist <имя> [N\|all]` | Скачать работы указанного автора |
+| `src [r34\|gel]` | Переключить источник (Rule34 / Gelbooru) |
+| `bl [on\|off\|add\|del\|list]` | Управление черным списком тегов |
+| `video [on\|off\|only]` | Режимы загрузки видеофайлов (`only` — строго видео) |
+| `score <N>` | Порог минимального рейтинга |
+| `count <N>` | Лимит скачивания по умолчанию |
+| `ai on/off` | Фильтр AI-генераций |
+| `list` | Список содержимого контейнера |
+| `set` | Меню конфигурации (язык, пароль, API Hook, черный список) |
+| `info` / `help` | Полная справка по хранилищу и синтаксису |
+| `update` | Проверка и установка OTA-обновлений |
+| `clean all` | Очистка рабочей папки |
+| `clear` / `cls` | Очистить экран |
+| `exit` / `q` | Выход из программы |
 
-## Структура хранилища
+### Хранилище
 
-Контейнер формируется со сжатием и шифрованием заголовков (`-mhe=on -mx0`):
 - **Windows**: `%USERPROFILE%\Documents\umaZhickR34\Bible.7z`
-- **Android**: `/storage/emulated/0/Documents/umaZhickR34/Bible.7z` (при ограничениях Scoped Storage сохранение выполняется в `$HOME/storage/shared/Documents` или локальный каталог `~/Documents/umaZhickR34`).
+- **Android**: `/storage/emulated/0/Documents/umaZhickR34/Bible.7z` (или fallback в `$HOME/storage/shared/Documents` / `~/Documents/umaZhickR34`)
+- **Конфигурация**: `~/.r34_config.json` (в Windows защищен через DPAPI, в Termux правами `0600`).
 
-Настройки и ключи сохраняются в `~/.r34_config.json`:
-- На Windows конфиденциальные поля защищены через Win32 Data Protection API (DPAPI).
-- В Termux доступ к файлу ограничен правами `0600` (только владелец процесса).
+---
+
+<a id="-english"></a>
+## 🇬🇧 English
+
+Command-line client for batch searching and downloading media from Rule34 and Gelbooru, packaged automatically into an encrypted 7-Zip container (AES-256). Supports Windows (PowerShell/CMD) and Android (Termux).
+
+### Features
+
+- **Search**: single and multi-tag queries (`oguri_cap solo ass 20`), artists (`artist <name>`), and franchises.
+- **Engines**: fast switching between Rule34 and Gelbooru databases (`src [r34|gel]`).
+- **Tag Blacklist**: filter out unwanted content (`bl on/off/add/del/list/clear`, default blocks futanari, guro, scat).
+- **Video Modes**: download animations/videos exclusively (`video only`), images and videos (`video on`), or static images only (`video off`).
+- **Filters**: AI generator suppression (`ai on/off`) and minimum score threshold (`score <N>`).
+- **Container Encryption**: all files are packed into a single AES-256 7z archive (`-mhe=on`, default password: `v1zhik`).
+- **Deduplication**: previously saved posts are automatically skipped using internal ID caching.
+- **Autocomplete**: real-time tag completions triggered via `TAB`.
+- **Seamless OTA**: automatic version check and update on startup.
+
+### Quick Install
+
+#### Windows
+
+Run in PowerShell:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"
+```
+
+The `r34` command is added to your PATH and ready to use immediately.
+
+#### Android (Termux)
+
+Run in Termux:
+
+```bash
+pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh -o ~/install_termux.sh && bash ~/install_termux.sh
+```
+
+Launch with: `r34`.
+
+### Command Reference
+
+| Command | Description |
+|---|---|
+| `<tag(s)> [N\|all]` | Download posts by tags (e.g.: `oguri_cap solo ass 20`) |
+| `artist <name> [N\|all]` | Download works by specified artist |
+| `src [r34\|gel]` | Toggle search provider (Rule34 / Gelbooru) |
+| `bl [on\|off\|add\|del\|list]` | Manage tag blacklist |
+| `video [on\|off\|only]` | Video download mode (`only` — exclusively videos) |
+| `score <N>` | Set minimum score threshold |
+| `count <N>` | Set default batch limit |
+| `ai on/off` | Toggle AI generator filter |
+| `list` | Show contents of the encrypted container |
+| `set` | Settings menu (language, vault password, API Hook, blacklist) |
+| `info` / `help` | Manual for storage hierarchy, formats, and syntax |
+| `update` | Check and apply OTA updates |
+| `clean all` | Purge working directory |
+| `clear` / `cls` | Clear terminal screen |
+| `exit` / `q` | Exit application |
+
+### Storage & Security
+
+- **Windows**: `%USERPROFILE%\Documents\umaZhickR34\Bible.7z`
+- **Android**: `/storage/emulated/0/Documents/umaZhickR34/Bible.7z` (or fallback to `$HOME/storage/shared/Documents` / `~/Documents/umaZhickR34`)
+- **Settings**: `~/.r34_config.json` (secured via Windows DPAPI on Windows, file mode `0600` on Termux).
