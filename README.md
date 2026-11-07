@@ -1,31 +1,78 @@
 # umaZhickR34
 
-Локальный клиент Rule34 с шифрованным хранилищем 7z для Windows и Termux.
+Консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
 
-## Windows
+## Возможности
 
-Выполните в командной строке или PowerShell:
+- Загрузка по тегам, авторам (`artist <имя>`) и франшизам.
+- Поддержка параметров выборки: лимит (`all` или количество) и минимальный рейтинг (`score <N>`).
+- Фильтрация контента: отключение AI-генераций (`ai on/off`) и управление загрузкой видео (`video on/off`).
+- Локальная дедупликация: исключение повторных загрузок по базе истории и хешам.
+- Автоматическая шифрация в единый контейнер 7z (пароль по умолчанию: `v1zhik`).
+- Автодополнение тегов в реальном времени при вводе.
+- Бесшовное OTA-обновление при запуске через GitHub Gist.
+- Полная автономность: отсутствие внешних серверов, телеметрии и аналитики.
+
+## Системные требования
+
+- **Windows**: Windows 10/11 (64-bit), PowerShell 5.1+. Установщик автоматически подтягивает Python 3.11 и 7-Zip через `winget`, если они отсутствуют.
+- **Android**: Termux (рекомендуется сборка из F-Droid), Android 8.0+. Доступ к хранилищу запрашивается скриптом (`termux-setup-storage`).
+
+## Быстрая установка
+
+### Windows
+
+Выполните в PowerShell (или Windows Terminal):
 
 ```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"; r34
+powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"
 ```
 
-Установщик загружает актуальную версию, Python-библиотеки и 7-Zip. После установки программа запускается командой `r34`. Если команда не находится, закройте и снова откройте терминал.
+Команда `r34` регистрируется в пользовательском PATH и доступна сразу.
 
-## Termux
+### Android (Termux)
+
+Выполните в консоли Termux:
 
 ```bash
-pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh -o ~/install_termux.sh && bash ~/install_termux.sh && r34
+pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh -o ~/install_termux.sh && bash ~/install_termux.sh
 ```
 
-Дальнейший запуск:
+Запуск осуществляется командой `r34`.
 
-```bash
-r34
+## Использование и синтаксис
+
+После запуска программы введите тег или команду:
+
+```text
+r34> oguri_cap_(umamusume) 20
+r34> artist rensuke all
+r34> score 50
 ```
 
-## Обновления
+### Таблица команд
 
-Программа проверяет обновления при запуске. Ручная проверка — команда `update` внутри программы.
+| Команда | Описание |
+|---|---|
+| `<тег> [N\|all]` | Загрузить посты по тегу (количество или все доступные) |
+| `artist <имя> [N\|all]` | Поиск и сохранение постов указанного автора |
+| `score <N>` | Установить порог минимального рейтинга |
+| `count <N>` | Установить размер пачки по умолчанию |
+| `ai on/off` | Включить/выключить фильтрацию сгенерированных артов |
+| `video on/off` | Включить/выключить загрузку видео (MP4/WebM) |
+| `list` | Показать список файлов внутри защищенного контейнера |
+| `set` | Меню настроек (язык, пароль архива, API Hook, сброс) |
+| `update` | Принудительная проверка и установка обновлений |
+| `clean all` | Очистка временных файлов и рабочей папки |
+| `clear` / `cls` | Очистить экран консоли |
+| `exit` / `q` | Завершить работу программы |
 
-Файлы и настройки хранятся локально. Архив на Windows: `Документы\umaZhickR34\Bible.7z`; на Android: `Documents/umaZhickR34/Bible.7z`.
+## Структура хранилища
+
+Контейнер формируется со сжатием и шифрованием заголовков (`-mhe=on -mx0`):
+- **Windows**: `%USERPROFILE%\Documents\umaZhickR34\Bible.7z`
+- **Android**: `/storage/emulated/0/Documents/umaZhickR34/Bible.7z` (при ограничениях Scoped Storage сохранение выполняется в `$HOME/storage/shared/Documents` или локальный каталог `~/Documents/umaZhickR34`).
+
+Настройки и ключи сохраняются в `~/.r34_config.json`:
+- На Windows конфиденциальные поля защищены через Win32 Data Protection API (DPAPI).
+- В Termux доступ к файлу ограничен правами `0600` (только владелец процесса).
