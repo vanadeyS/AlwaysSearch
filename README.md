@@ -1,4 +1,4 @@
-# umaZhickR34
+# NeverSearch
 
 [ 🇷🇺 Русский ](#-русский) | [ 🇬🇧 English ](#-english)
 
@@ -7,7 +7,7 @@
 <a id="-русский"></a>
 ## 🇷🇺 Русский
 
-Консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 и Gelbooru с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
+**NeverSearch** («Никогда не ищи») — консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 и Gelbooru с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
 
 ### Возможности
 
@@ -65,8 +65,8 @@ pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd55
 
 ### Хранилище
 
-- **Windows**: `%USERPROFILE%\Documents\umaZhickR34\Bible.7z`
-- **Android**: `/storage/emulated/0/Documents/umaZhickR34/Bible.7z` (или fallback в `$HOME/storage/shared/Documents` / `~/Documents/umaZhickR34`)
+- **Windows**: `%USERPROFILE%\Documents\NeverSearch\Bible.7z` (с обратной совместимостью с каталогом `umaZhickR34`)
+- **Android**: `/storage/emulated/0/Documents/NeverSearch/Bible.7z` (или fallback в `$HOME/storage/shared/Documents` / `~/Documents/NeverSearch`)
 - **Конфигурация**: `~/.r34_config.json` (в Windows защищен через DPAPI, в Termux правами `0600`).
 
 ---
@@ -74,7 +74,7 @@ pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd55
 <a id="-english"></a>
 ## 🇬🇧 English
 
-Command-line client for batch searching and downloading media from Rule34 and Gelbooru, packaged automatically into an encrypted 7-Zip container (AES-256). Supports Windows (PowerShell/CMD) and Android (Termux).
+**NeverSearch** ("Never Search") is a command-line client for batch searching and downloading media from Rule34 and Gelbooru, packaged automatically into an encrypted 7-Zip container (AES-256). Supports Windows (PowerShell/CMD) and Android (Termux).
 
 ### Features
 
@@ -132,6 +132,6 @@ Launch with: `r34`.
 
 ### Storage & Security
 
-- **Windows**: `%USERPROFILE%\Documents\umaZhickR34\Bible.7z`
-- **Android**: `/storage/emulated/0/Documents/umaZhickR34/Bible.7z` (or fallback to `$HOME/storage/shared/Documents` / `~/Documents/umaZhickR34`)
+- **Windows**: `%USERPROFILE%\Documents\NeverSearch\Bible.7z` (with backward compatibility for `umaZhickR34`)
+- **Android**: `/storage/emulated/0/Documents/NeverSearch/Bible.7z` (or fallback to `$HOME/storage/shared/Documents` / `~/Documents/NeverSearch`)
 - **Settings**: `~/.r34_config.json` (secured via Windows DPAPI on Windows, file mode `0600` on Termux).
