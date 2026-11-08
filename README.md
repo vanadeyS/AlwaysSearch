@@ -60,6 +60,7 @@ pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd55
 | `info` / `help` | Полная справка по хранилищу и синтаксису |
 | `update` | Проверка и установка OTA-обновлений |
 | `clean all` | Очистка рабочей папки |
+| `mouse [on\|off]` | Включить/выключить поддержку мыши (Shift+Ctrl+Колесо для зума) |
 | `clear` / `cls` | Очистить экран |
 | `exit` / `q` | Выход из программы |
 
@@ -127,6 +128,7 @@ Launch with: `r34`.
 | `info` / `help` | Manual for storage hierarchy, formats, and syntax |
 | `update` | Check and apply OTA updates |
 | `clean all` | Purge working directory |
+| `mouse [on\|off]` | Toggle mouse support (Shift+Ctrl+Wheel for terminal zoom) |
 | `clear` / `cls` | Clear terminal screen |
 | `exit` / `q` | Exit application |
 
