@@ -1,11 +1,17 @@
 # NeverSearch
 
+[![Stable Release](https://img.shields.io/badge/version-v1.05.03-brightgreen.svg)](https://github.com/vanadeyS/AlwaysSearch/releases)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android%20(Termux)-informational.svg)](#-быстрая-установка-1-команда)
+
 [ 🇷🇺 Русский ](#-русский) | [ 🇬🇧 English ](#-english)
 
 ---
 
 <a id="-русский"></a>
 ## 🇷🇺 Русский
+
+> **Текущая стабильная версия:** 1.05.03
 
 **NeverSearch** («Никогда не ищи») — консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 и Gelbooru с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
 
@@ -70,6 +76,8 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 <a id="-english"></a>
 ## 🇬🇧 English
+
+> **Current Stable Version:** 1.05.03
 
 **NeverSearch** ("Never Search") is a command-line client for batch searching and downloading media from Rule34 and Gelbooru, packaged automatically into an encrypted 7-Zip container (AES-256). Supports Windows (PowerShell/CMD) and Android (Termux).
 
