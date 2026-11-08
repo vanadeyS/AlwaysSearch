@@ -133,7 +133,7 @@ Write-Host (if ($isRu) { "[*] Проверка зависимостей Python (
 
 # Download / update NeverSearch
 Write-Host (if ($isRu) { "[*] Загрузка актуальной версии NeverSearch..." } else { "[*] Downloading latest NeverSearch..." }) -ForegroundColor Cyan
-Invoke-WebRequest "https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/r34_gallery.py" -OutFile $Script -UseBasicParsing
+Invoke-WebRequest "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py" -OutFile $Script -UseBasicParsing
 
 # Create launchers
 $LauncherContent = @"
