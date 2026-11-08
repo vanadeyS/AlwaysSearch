@@ -1,8 +1,6 @@
 $ErrorActionPreference = "Stop"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12 -bor [Net.SecurityProtocolType]::Tls13
 
-$GistId = "fd557488cadf0371fb235876bb85c9f2"
-
 # System language detection
 $sysLang = [System.Globalization.CultureInfo]::CurrentUICulture.TwoLetterISOLanguageName
 $isRu = ($sysLang -in @("ru", "be", "uk"))
@@ -135,7 +133,7 @@ Write-Host (if ($isRu) { "[*] Проверка зависимостей Python (
 
 # Download / update NeverSearch
 Write-Host (if ($isRu) { "[*] Загрузка актуальной версии NeverSearch..." } else { "[*] Downloading latest NeverSearch..." }) -ForegroundColor Cyan
-Invoke-WebRequest "https://gist.githubusercontent.com/vanadeyS/$GistId/raw/r34_gallery.py" -OutFile $Script -UseBasicParsing
+Invoke-WebRequest "https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/r34_gallery.py" -OutFile $Script -UseBasicParsing
 
 # Create launchers
 $LauncherContent = @"
