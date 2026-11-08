@@ -68,7 +68,7 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import Completer, Completion, ThreadedCompleter
 from prompt_toolkit.styles import Style
 
-VERSION = "1.05.02"
+VERSION = "1.05.03"
 UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py"
 AUTHOR = "vanadeyS"
 AUTHOR_GITHUB = "https://github.com/vanadeyS"
@@ -1155,9 +1155,10 @@ def download_tag(raw_tag, count, artist=False):
         tokens = tag.split()
         if len(tokens) == 1:
             available = max(0, total - len(known))
+            limit = requested_limit(count, available)
         else:
-            available = max(1, total - len(known)) if total > len(known) else total
-        limit = requested_limit(count, available)
+            available = total
+            limit = requested_limit(count, total)
         print(f"[*] {archive.name} -> {franchise}/{character}")
         print(f"[*] {t('stats_summary', total=total, known=len(known), available=available)}")
         if not limit:
@@ -1253,9 +1254,10 @@ def download_tag(raw_tag, count, artist=False):
             failed_dump = staging.parent / f"_failed_{int(time.time())}"
             try:
                 shutil.move(str(staging), str(failed_dump))
+                dump_path = failed_dump
             except OSError:
-                pass
-            print(f"[-] {t('archive_error', name=failed_dump.name)}")
+                dump_path = staging
+            print(f"[-] {t('archive_error', name=str(dump_path))}")
             return
         print(f"\033[32m[+] {t('vault_updated')}: {archive.stat().st_size / 1048576:.2f} MB\033[0m")
         print(f"[*] {t('download_success', done=len(succeeded), total=len(selected))}")
@@ -1387,7 +1389,12 @@ def uninstall():
         print(t("cancelled"))
         time.sleep(1)
         return False
-    targets = [ROOT_DIR, CONFIG_PATH, CONFIG_PATH.with_suffix(".tmp"), get_staging_dir()]
+    s_dir = get_staging_dir()
+    targets = [ROOT_DIR, CONFIG_PATH, CONFIG_PATH.with_suffix(".tmp"), s_dir]
+    try:
+        targets.extend(s_dir.parent.glob("_failed_*"))
+    except Exception:
+        pass
     targets.extend(launchers)
     if os.name == "nt":
         targets.extend(program.with_name(f"{program.name}.{suffix}") for suffix in ("bak", "new", "newc"))
