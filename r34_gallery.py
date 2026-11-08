@@ -1,7 +1,7 @@
 # =====================================================================
 # NeverSearch
 # Author: vanadeyS (https://github.com/vanadeyS)
-# Official Repository: https://github.com/vanadeyS/umaZhickR34
+# Official Repository: https://github.com/vanadeyS/AlwaysSearch
 # Copyright (c) 2026 vanadeyS. All rights reserved.
 # =====================================================================
 #!/usr/bin/env python3
@@ -69,7 +69,7 @@ from prompt_toolkit.completion import Completer, Completion, ThreadedCompleter
 from prompt_toolkit.styles import Style
 
 VERSION = "1.05.00"
-UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/r34_gallery.py"
+UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py"
 AUTHOR = "vanadeyS"
 AUTHOR_GITHUB = "https://github.com/vanadeyS"
 
