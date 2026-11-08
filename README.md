@@ -21,27 +21,23 @@
 - **Автодополнение**: интерактивные подсказки тегов по клавише `TAB`.
 - **Бесшовное OTA-обновление**: проверка и применение обновлений при запуске.
 
-### Быстрая установка
+### Быстрая установка (1 команда)
 
-#### Windows
+#### Windows (вставить в CMD, PowerShell или Win+R):
 
-Выполните в PowerShell:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"
+```cmd
+powershell -ep bypass -c "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"
 ```
 
-Команда `r34` регистрируется в системе и доступна из любой консоли.
+*Скрипт автоматически проверит и установит Python 3.11, 7-Zip, библиотеки `requests` и `prompt_toolkit`, зарегистрирует команды `never` и `r34` в PATH и сразу запустит софт.*
 
-#### Android (Termux)
-
-Выполните в Termux:
+#### Android (Termux):
 
 ```bash
-pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh -o ~/install_termux.sh && bash ~/install_termux.sh
+curl -sLO https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh && bash install_termux.sh
 ```
 
-Запуск: `r34`.
+*Автоматически устанавливает `python`, `7zip`, `curl`, необходимые библиотеки и сразу запускает NeverSearch. Для последующих запусков: `never` или `r34`.*
 
 ### Таблица команд
 
@@ -60,7 +56,6 @@ pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd55
 | `info` / `help` | Полная справка по хранилищу и синтаксису |
 | `update` | Проверка и установка OTA-обновлений |
 | `clean all` | Очистка рабочей папки |
-| `mouse [on\|off]` | Включить/выключить поддержку мыши (Shift+Ctrl+Колесо для зума) |
 | `theme [mono\|blue]` | Переключить цветовую палитру логотипа (Mono / Blue) |
 | `clear` / `cls` | Очистить экран |
 | `exit` / `q` | Выход из программы |
@@ -92,25 +87,21 @@ pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd55
 
 ### Quick Install
 
-#### Windows
+#### Windows (Run in CMD, PowerShell, or Win+R):
 
-Run in PowerShell:
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -Command "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"
+```cmd
+powershell -ep bypass -c "irm https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_windows.ps1 | iex"
 ```
 
-The `r34` command is added to your PATH and ready to use immediately.
+*Automatically installs Python 3.11, 7-Zip, dependencies (`requests`, `prompt_toolkit`), registers `never` and `r34` commands, and starts NeverSearch immediately.*
 
-#### Android (Termux)
-
-Run in Termux:
+#### Android (Termux):
 
 ```bash
-pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh -o ~/install_termux.sh && bash ~/install_termux.sh
+curl -sLO https://gist.githubusercontent.com/vanadeyS/fd557488cadf0371fb235876bb85c9f2/raw/install_termux.sh && bash install_termux.sh
 ```
 
-Launch with: `r34`.
+*Automatically installs `python`, `7zip`, `curl`, dependencies, and launches NeverSearch. For future runs: simply type `never` or `r34`.*
 
 ### Command Reference
 
@@ -129,7 +120,6 @@ Launch with: `r34`.
 | `info` / `help` | Manual for storage hierarchy, formats, and syntax |
 | `update` | Check and apply OTA updates |
 | `clean all` | Purge working directory |
-| `mouse [on\|off]` | Toggle mouse support (Shift+Ctrl+Wheel for terminal zoom) |
 | `theme [mono\|blue]` | Switch logo color palette (Mono / Blue) |
 | `clear` / `cls` | Clear terminal screen |
 | `exit` / `q` | Exit application |
