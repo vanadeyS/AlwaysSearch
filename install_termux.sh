@@ -1,7 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/bash
 set -e
 
-GIST_ID="fd557488cadf0371fb235876bb85c9f2"
 PREFIX="${PREFIX:-/data/data/com.termux/files/usr}"
 HOME="${HOME:-/data/data/com.termux/files/home}"
 TARGET="$HOME/r34_gallery.py"
@@ -32,7 +31,7 @@ python3 -m pip install --upgrade requests prompt_toolkit --user 2>/dev/null || \
 python3 -m pip install --upgrade requests prompt_toolkit 2>/dev/null || true
 
 printf '%s\n' "$MSG_START"
-curl -fL "https://gist.githubusercontent.com/vanadeyS/$GIST_ID/raw/r34_gallery.py" -o "$TARGET"
+curl -fL "https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/r34_gallery.py" -o "$TARGET"
 
 cat << 'EOF' > "$LAUNCHER"
 #!/data/data/com.termux/files/usr/bin/sh
