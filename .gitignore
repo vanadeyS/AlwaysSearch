@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+*$py.class
+*.part
+*.tmp
+*.bak
+*.new
+.history.txt
+.pid
+error.log
+_staging/
+.venv/
