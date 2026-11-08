@@ -68,7 +68,7 @@ from prompt_toolkit import prompt
 from prompt_toolkit.completion import Completer, Completion, ThreadedCompleter
 from prompt_toolkit.styles import Style
 
-VERSION = "1.05.01"
+VERSION = "1.05.02"
 UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py"
 AUTHOR = "vanadeyS"
 AUTHOR_GITHUB = "https://github.com/vanadeyS"
@@ -935,15 +935,8 @@ def resolve_paths(tag, artist=False):
         return franchise, pfx + art_name
 
     tokens = tag.split()
-    # Find specific character tag with franchise parentheses if present
     char_tokens = [t for t in tokens if '(' in t and ')' in t]
-    if char_tokens:
-        primary = safe_component(char_tokens[0])
-    else:
-        # Ignore generic modifier tags as primary folder name
-        generic = {"solo", "1girl", "2girls", "1boy", "ass", "breasts", "thighs", "highres", "monochrome", "comic"}
-        candidates = [t for t in tokens if t.lower() not in generic]
-        primary = safe_component(candidates[0] if candidates else (tokens[0] if tokens else "untitled"))
+    primary = safe_component(char_tokens[0] if char_tokens else (tokens[0] if tokens else "untitled"))
 
     match = re.fullmatch(r"(.*?)_\((.*?)\)", primary)
     if match:
@@ -1159,8 +1152,12 @@ def download_tag(raw_tag, count, artist=False):
                 print(f"[-] {t('archive_open_error')}")
                 return
         known = read_history(target_dir)
-        limit = requested_limit(count, total)
-        available = max(0, total)
+        tokens = tag.split()
+        if len(tokens) == 1:
+            available = max(0, total - len(known))
+        else:
+            available = max(1, total - len(known)) if total > len(known) else total
+        limit = requested_limit(count, available)
         print(f"[*] {archive.name} -> {franchise}/{character}")
         print(f"[*] {t('stats_summary', total=total, known=len(known), available=available)}")
         if not limit:
@@ -1253,8 +1250,11 @@ def download_tag(raw_tag, count, artist=False):
                 cwd=staging,
             )
         if result.returncode != 0:
-            failed_dump = ROOT_DIR / f"_failed_{int(time.time())}"
-            staging.rename(failed_dump)
+            failed_dump = staging.parent / f"_failed_{int(time.time())}"
+            try:
+                shutil.move(str(staging), str(failed_dump))
+            except OSError:
+                pass
             print(f"[-] {t('archive_error', name=failed_dump.name)}")
             return
         print(f"\033[32m[+] {t('vault_updated')}: {archive.stat().st_size / 1048576:.2f} MB\033[0m")
