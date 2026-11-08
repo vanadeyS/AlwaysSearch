@@ -31,7 +31,7 @@ python3 -m pip install --upgrade requests prompt_toolkit --user 2>/dev/null || \
 python3 -m pip install --upgrade requests prompt_toolkit 2>/dev/null || true
 
 printf '%s\n' "$MSG_START"
-curl -fL "https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/r34_gallery.py" -o "$TARGET"
+curl -fL "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py" -o "$TARGET"
 
 cat << 'EOF' > "$LAUNCHER"
 #!/data/data/com.termux/files/usr/bin/sh
