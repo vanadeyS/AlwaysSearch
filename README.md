@@ -26,7 +26,7 @@
 #### Windows (вставить в CMD, PowerShell или Win+R):
 
 ```cmd
-powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/install_windows.ps1 | iex"
+powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_windows.ps1 | iex"
 ```
 
 *Скрипт автоматически проверит и установит Python 3.11, 7-Zip, библиотеки `requests` и `prompt_toolkit`, зарегистрирует команды `never` и `r34` в PATH и сразу запустит софт.*
@@ -34,7 +34,7 @@ powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/umaZhic
 #### Android (Termux):
 
 ```bash
-curl -sLO https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/install_termux.sh && bash install_termux.sh
+curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_termux.sh && bash install_termux.sh
 ```
 
 *Автоматически устанавливает `python`, `7zip`, `curl`, необходимые библиотеки и сразу запускает NeverSearch. Для последующих запусков: `never` или `r34`.*
@@ -90,7 +90,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/install_te
 #### Windows (Run in CMD, PowerShell, or Win+R):
 
 ```cmd
-powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/install_windows.ps1 | iex"
+powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_windows.ps1 | iex"
 ```
 
 *Automatically installs Python 3.11, 7-Zip, dependencies (`requests`, `prompt_toolkit`), registers `never` and `r34` commands, and starts NeverSearch immediately.*
@@ -98,7 +98,7 @@ powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/umaZhic
 #### Android (Termux):
 
 ```bash
-curl -sLO https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/install_termux.sh && bash install_termux.sh
+curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_termux.sh && bash install_termux.sh
 ```
 
 *Automatically installs `python`, `7zip`, `curl`, dependencies, and launches NeverSearch. For future runs: simply type `never` or `r34`.*
