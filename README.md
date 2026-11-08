@@ -61,6 +61,7 @@ pkg install -y curl && curl -fL https://gist.githubusercontent.com/vanadeyS/fd55
 | `update` | Проверка и установка OTA-обновлений |
 | `clean all` | Очистка рабочей папки |
 | `mouse [on\|off]` | Включить/выключить поддержку мыши (Shift+Ctrl+Колесо для зума) |
+| `theme [mono\|blue]` | Переключить цветовую палитру логотипа (Mono / Blue) |
 | `clear` / `cls` | Очистить экран |
 | `exit` / `q` | Выход из программы |
 
@@ -129,6 +130,7 @@ Launch with: `r34`.
 | `update` | Check and apply OTA updates |
 | `clean all` | Purge working directory |
 | `mouse [on\|off]` | Toggle mouse support (Shift+Ctrl+Wheel for terminal zoom) |
+| `theme [mono\|blue]` | Switch logo color palette (Mono / Blue) |
 | `clear` / `cls` | Clear terminal screen |
 | `exit` / `q` | Exit application |
 
