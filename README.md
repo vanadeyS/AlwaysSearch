@@ -27,23 +27,25 @@
 - **Автодополнение**: интерактивные подсказки тегов по клавише `TAB`.
 - **Бесшовное OTA-обновление**: проверка и применение обновлений при запуске.
 
-### Быстрая установка (1 команда)
+### 🚀 Быстрая установка (1 команда)
 
-#### Windows (вставить в CMD, PowerShell или Win+R):
+#### 🪟 На компьютере (Windows 10 / 11):
+> **Куда вставлять:** откройте **PowerShell**, **Командную строку (CMD)** или нажмите **Win + R**, вставьте и нажмите Enter:
 
-```cmd
+```powershell
 powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_windows.ps1 | iex"
 ```
 
-*Скрипт автоматически проверит и установит Python 3.11, 7-Zip, библиотеки `requests` и `prompt_toolkit`, зарегистрирует команды `never` и `r34` в PATH и сразу запустит софт.*
+*(Работает одинаково в PowerShell, CMD и окне «Выполнить». Скрипт сам поставит Python 3.11, 7-Zip и зависимости)*
 
-#### Android (Termux):
+#### 📱 На телефоне (Android):
+> **Куда вставлять:** откройте приложение **Termux** (на телефоне), вставьте и нажмите Enter:
 
 ```bash
 curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_termux.sh && bash install_termux.sh
 ```
 
-*Автоматически устанавливает `python`, `7zip`, `curl`, необходимые библиотеки и сразу запускает NeverSearch. Для последующих запусков: `never` или `r34`.*
+*(Не вставлять эту команду в Windows! Она предназначена строго для Termux на Android)*
 
 ### Таблица команд
 
@@ -93,23 +95,25 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 - **Autocomplete**: real-time tag completions triggered via `TAB`.
 - **Seamless OTA**: automatic version check and update on startup.
 
-### Quick Install
+### 🚀 Quick Install (1 command)
 
-#### Windows (Run in CMD, PowerShell, or Win+R):
+#### 🪟 Windows PC (Windows 10 / 11):
+> **Where to paste:** open **PowerShell**, **Command Prompt (CMD)**, or press **Win + R**, paste and hit Enter:
 
-```cmd
+```powershell
 powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_windows.ps1 | iex"
 ```
 
-*Automatically installs Python 3.11, 7-Zip, dependencies (`requests`, `prompt_toolkit`), registers `never` and `r34` commands, and starts NeverSearch immediately.*
+*(Works seamlessly in PowerShell, CMD, and Run dialog. Automatically installs Python 3.11, 7-Zip, and dependencies)*
 
-#### Android (Termux):
+#### 📱 Android Phone (Termux):
+> **Where to paste:** open the **Termux** app on your phone, paste and hit Enter:
 
 ```bash
 curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_termux.sh && bash install_termux.sh
 ```
 
-*Automatically installs `python`, `7zip`, `curl`, dependencies, and launches NeverSearch. For future runs: simply type `never` or `r34`.*
+*(Do not run this command on Windows! It is exclusively for Termux on Android)*
 
 ### Command Reference
 
