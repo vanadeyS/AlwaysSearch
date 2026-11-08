@@ -1,10 +1,10 @@
+#!/usr/bin/env python3
 # =====================================================================
 # NeverSearch
 # Author: vanadeyS (https://github.com/vanadeyS)
 # Official Repository: https://github.com/vanadeyS/AlwaysSearch
 # Copyright (c) 2026 vanadeyS. All rights reserved.
 # =====================================================================
-#!/usr/bin/env python3
 import base64
 import copy
 import ctypes
@@ -575,8 +575,15 @@ def is_pid_running(pid):
             return False
 
 
+def get_staging_dir():
+    if os.name == "nt":
+        base = os.environ.get("LOCALAPPDATA") or str(Path.home() / "AppData" / "Local")
+        return Path(base) / "NeverSearch" / "_staging"
+    return Path.home() / ".NeverSearch_staging"
+
+
 def clean_stale_staging():
-    staging = ROOT_DIR / "_staging"
+    staging = get_staging_dir()
     if not staging.exists():
         return True
     pid_file = staging / ".pid"
@@ -650,8 +657,18 @@ def save_cfg():
 
 def session():
     if not hasattr(local, "session"):
-        local.session = requests.Session()
-        local.session.headers.update(HEADERS)
+        s = requests.Session()
+        s.headers.update(HEADERS)
+        try:
+            from urllib3.util import Retry
+            from requests.adapters import HTTPAdapter
+            retries = Retry(total=3, backoff_factor=1, status_forcelist=[429, 500, 502, 503, 504], raise_on_status=False)
+            adapter = HTTPAdapter(max_retries=retries, pool_connections=10, pool_maxsize=10)
+            s.mount("http://", adapter)
+            s.mount("https://", adapter)
+        except Exception:
+            pass
+        local.session = s
     return local.session
 
 
@@ -870,14 +887,19 @@ def check_auto_update(silent=True):
         if not ("NeverSearch" in response.text and "vanadeyS" in response.text):
             raise ValueError("Payload signature mismatch.")
         if parse_version(remote_version) > parse_version(VERSION):
-            print(f"\n\033[32m[+] OTA Update: v{remote_version}\033[0m")
-            replace_program(response.text)
-            target_file = str(Path(__file__).resolve())
-            if os.name == "nt":
-                subprocess.Popen([sys.executable, target_file])
-                sys.exit(0)
-            else:
-                os.execv(sys.executable, [sys.executable, target_file])
+            prompt_msg = f"\n\033[33m[!] Доступно обновление: v{remote_version} (текущая: v{VERSION}). Обновить? (Y/n): \033[0m" if cfg.get("lang") == "ru" else f"\n\033[33m[!] Update available: v{remote_version} (current: v{VERSION}). Update now? (Y/n): \033[0m"
+            sys.stdout.write(prompt_msg)
+            sys.stdout.flush()
+            ans = sys.stdin.readline().strip().lower()
+            if ans in ("", "y", "yes", "д", "да"):
+                print(f"\033[32m[+] OTA Update: v{remote_version}\033[0m")
+                replace_program(response.text)
+                target_file = str(Path(__file__).resolve())
+                if os.name == "nt":
+                    subprocess.Popen([sys.executable, target_file])
+                    sys.exit(0)
+                else:
+                    os.execv(sys.executable, [sys.executable, target_file])
         if not silent:
             print(f"[*] {t('update_current', version=VERSION)}")
     except (requests.RequestException, OSError, SyntaxError, ValueError) as error:
@@ -889,7 +911,7 @@ def check_auto_update(silent=True):
 
 
 def safe_component(value):
-    value = re.sub(r'[\/:*?"<>|\x00-]', "_", str(value or "").strip())
+    value = re.sub(r'[\/:*?"<>|\x00-\x1f]', "_", str(value or "").strip())
     value = re.sub(r'\.{2,}', "_", value)
     value = value.strip(". ")
     value = value.lstrip("-@")
@@ -907,19 +929,20 @@ def resolve_paths(tag, artist=False):
         pfx = f"{prefix}_" if prefix else "R34_"
         root_sec = ""
 
-    tag = safe_component(tag)
+    tokens = tag.split()
+    primary = safe_component(tokens[0]) if tokens else "untitled"
     if artist:
         franchise = f"{root_sec}/Artists" if root_sec else "Artists"
-        return franchise, pfx + tag
-    match = re.fullmatch(r"(.*?)_\((.*?)\)", tag)
+        return franchise, pfx + primary
+    match = re.fullmatch(r"(.*?)_\((.*?)\)", primary)
     if match:
         fra = safe_component(match.group(2)).title()
         franchise = f"{root_sec}/{fra}" if root_sec else fra
         char_name = safe_component(match.group(1)).title()
         return franchise, pfx + char_name
-    fra = safe_component(tag).title()
+    fra = primary.title()
     franchise = f"{root_sec}/{fra}" if root_sec else fra
-    return franchise, pfx + safe_component(tag).lower()
+    return franchise, pfx + primary.lower()
 
 
 def auth_query():
@@ -976,8 +999,12 @@ def api_posts(tags, limit=100, page=0):
 
 
 def normalize_tag(raw):
-    tag = re.sub(r"\s+", "_", raw.strip())
-    return re.sub(r"(?<!_)\(", "_(", tag)
+    tokens = [t.strip() for t in str(raw or "").split() if t.strip()]
+    cleaned = []
+    for token in tokens:
+        tok = re.sub(r"(?<!_)\(", "_(", token)
+        cleaned.append(tok)
+    return " ".join(cleaned)
 
 
 def read_history(folder):
@@ -1097,7 +1124,7 @@ def download_tag(raw_tag, count, artist=False):
 
     franchise, character = resolve_paths(tag, artist)
     clean_stale_staging()
-    staging = ROOT_DIR / "_staging"
+    staging = get_staging_dir()
     if staging.exists():
         print(f"[-] {t('staging_busy')}")
         return
