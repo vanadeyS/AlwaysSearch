@@ -64,7 +64,7 @@ function Get-PythonExecutable {
 $Python = Get-PythonExecutable
 if (-not $Python) {
     if (Get-Command winget -ErrorAction SilentlyContinue) {
-        Write-Host (if ($isRu) { "[*] Python не найден. Установка Python 3.11 через winget..." } else { "[*] Python not found. Installing Python 3.11 via winget..." }) -ForegroundColor Yellow
+        Write-Host $(if ($isRu) { "[*] Python не найден. Установка Python 3.11 через winget..." } else { "[*] Python not found. Installing Python 3.11 via winget..." }) -ForegroundColor Yellow
         winget install --id Python.Python.3.11 --exact --silent --accept-package-agreements --accept-source-agreements
         # Refresh PATH
         $regUser = [Environment]::GetEnvironmentVariable("Path", "User")
@@ -73,11 +73,11 @@ if (-not $Python) {
         $Python = Get-PythonExecutable
     }
     if (-not $Python) {
-        Write-Host (if ($isRu) { "[*] Загрузка официального установщика Python 3.11..." } else { "[*] Downloading official Python 3.11 installer..." }) -ForegroundColor Yellow
+        Write-Host $(if ($isRu) { "[*] Загрузка официального установщика Python 3.11..." } else { "[*] Downloading official Python 3.11 installer..." }) -ForegroundColor Yellow
         $pyInst = Join-Path $env:TEMP "python-3.11.9-amd64.exe"
         try {
             (New-Object System.Net.WebClient).DownloadFile("https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe", $pyInst)
-            Write-Host (if ($isRu) { "[*] Бесшумная установка Python 3.11..." } else { "[*] Installing Python 3.11 silently..." }) -ForegroundColor Yellow
+            Write-Host $(if ($isRu) { "[*] Бесшумная установка Python 3.11..." } else { "[*] Installing Python 3.11 silently..." }) -ForegroundColor Yellow
             Start-Process -FilePath $pyInst -ArgumentList "/quiet", "InstallAllUsers=0", "PrependPath=1", "Include_test=0" -Wait
             Remove-Item -Force $pyInst -ErrorAction SilentlyContinue
         } catch {}
@@ -89,7 +89,7 @@ if (-not $Python) {
 }
 
 if (-not $Python) {
-    Write-Host (if ($isRu) { "[-] Python 3 не найден! Пожалуйста, установите Python 3 (отметьте 'Add Python to PATH') и перезапустите." } else { "[-] Python 3 not found! Please install Python 3 (check 'Add Python to PATH') and re-run installer." }) -ForegroundColor Red
+    Write-Host $(if ($isRu) { "[-] Python 3 не найден! Пожалуйста, установите Python 3 (отметьте 'Add Python to PATH') и перезапустите." } else { "[-] Python 3 not found! Please install Python 3 (check 'Add Python to PATH') and re-run installer." }) -ForegroundColor Red
     return
 }
 
@@ -112,11 +112,11 @@ function Get-7zExecutable {
 
 if (-not (Get-7zExecutable)) {
     if (Get-Command winget -ErrorAction SilentlyContinue) {
-        Write-Host (if ($isRu) { "[*] Установка 7-Zip через winget..." } else { "[*] Installing 7-Zip via winget..." }) -ForegroundColor Yellow
+        Write-Host $(if ($isRu) { "[*] Установка 7-Zip через winget..." } else { "[*] Installing 7-Zip via winget..." }) -ForegroundColor Yellow
         winget install --id 7zip.7zip --exact --silent --accept-package-agreements --accept-source-agreements
     }
     if (-not (Get-7zExecutable)) {
-        Write-Host (if ($isRu) { "[*] Загрузка 7-Zip с официального сайта..." } else { "[*] Downloading 7-Zip from official site..." }) -ForegroundColor Yellow
+        Write-Host $(if ($isRu) { "[*] Загрузка 7-Zip с официального сайта..." } else { "[*] Downloading 7-Zip from official site..." }) -ForegroundColor Yellow
         $sevenZipInst = Join-Path $env:TEMP "7z_setup.exe"
         try {
             (New-Object System.Net.WebClient).DownloadFile("https://www.7-zip.org/a/7z2408-x64.exe", $sevenZipInst)
@@ -127,12 +127,12 @@ if (-not (Get-7zExecutable)) {
 }
 
 # Install dependencies
-Write-Host (if ($isRu) { "[*] Проверка зависимостей Python (requests, prompt_toolkit)..." } else { "[*] Checking Python dependencies (requests, prompt_toolkit)..." }) -ForegroundColor Cyan
+Write-Host $(if ($isRu) { "[*] Проверка зависимостей Python (requests, prompt_toolkit)..." } else { "[*] Checking Python dependencies (requests, prompt_toolkit)..." }) -ForegroundColor Cyan
 & "$Python" -m ensurepip --default-pip 2>$null | Out-Null
 & "$Python" -m pip install --upgrade --quiet requests prompt_toolkit
 
 # Download / update NeverSearch
-Write-Host (if ($isRu) { "[*] Загрузка актуальной версии NeverSearch..." } else { "[*] Downloading latest NeverSearch..." }) -ForegroundColor Cyan
+Write-Host $(if ($isRu) { "[*] Загрузка актуальной версии NeverSearch..." } else { "[*] Downloading latest NeverSearch..." }) -ForegroundColor Cyan
 Invoke-WebRequest "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py" -OutFile $Script -UseBasicParsing
 
 # Create launchers
@@ -189,8 +189,8 @@ function global:never {
     & "$Python" "$Script" @argsList
 }
 
-Write-Host (if ($isRu) { "`n[+] NeverSearch успешно установлен!" } else { "`n[+] NeverSearch successfully installed!" }) -ForegroundColor Green
-Write-Host (if ($isRu) { "[*] Команды 'never' и 'r34' зарегистрированы в системе." } else { "[*] Commands 'never' and 'r34' registered in system." }) -ForegroundColor Gray
-Write-Host (if ($isRu) { "[+] Запуск NeverSearch..." } else { "[+] Starting NeverSearch..." }) -ForegroundColor Cyan
+Write-Host $(if ($isRu) { "`n[+] NeverSearch успешно установлен!" } else { "`n[+] NeverSearch successfully installed!" }) -ForegroundColor Green
+Write-Host $(if ($isRu) { "[*] Команды 'never' и 'r34' зарегистрированы в системе." } else { "[*] Commands 'never' and 'r34' registered in system." }) -ForegroundColor Gray
+Write-Host $(if ($isRu) { "[+] Запуск NeverSearch..." } else { "[+] Starting NeverSearch..." }) -ForegroundColor Cyan
 
 & "$Python" "$Script"
