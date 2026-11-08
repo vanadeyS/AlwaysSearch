@@ -1,3 +1,9 @@
+# =====================================================================
+# NeverSearch
+# Author: vanadeyS (https://github.com/vanadeyS)
+# Official Repository: https://github.com/vanadeyS/umaZhickR34
+# Copyright (c) 2026 vanadeyS. All rights reserved.
+# =====================================================================
 #!/usr/bin/env python3
 import base64
 import copy
@@ -63,14 +69,10 @@ from prompt_toolkit.completion import Completer, Completion, ThreadedCompleter
 from prompt_toolkit.styles import Style
 
 VERSION = "1.05.00"
-GIST_ID = "fd557488cadf0371fb235876bb85c9f2"
-UPDATE_URL = f"https://gist.githubusercontent.com/vanadeyS/{GIST_ID}/raw/r34_gallery.py"
+UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/umaZhickR34/main/r34_gallery.py"
+AUTHOR = "vanadeyS"
 AUTHOR_GITHUB = "https://github.com/vanadeyS"
-ADMIN_LOGIN = "vanadeyS"
 
-
-def is_admin():
-    return bool(secret("github_token"))
 DEFAULT_PASSWORD = "v1zhik"
 
 
@@ -140,7 +142,6 @@ DEFAULTS = {
     "user_id": "",
     "gel_api_key": "",
     "gel_user_id": "",
-    "github_token": "",
     "vault_name": "Bible",
     "vault_pass": DEFAULT_PASSWORD,
     "folder_prefix": "R34",
@@ -162,7 +163,6 @@ TEXT = {
         "cmd_list": "список содержимого архива",
         "cmd_set": "настройки хранилища и ключей",
         "cmd_update": "проверить обновления",
-        "cmd_push": "выкатить патч в gist",
         "cmd_clean": "очистить каталог",
         "cmd_exit": "очистка / выход",
         "on": "вкл", "off": "выкл", "active": "АКТИВЕН", "offline": "НЕТ",
@@ -181,7 +181,6 @@ TEXT = {
         "cfg_count": "Лимит закачки",
         "cfg_ai": "Фильтр ИИ",
         "cfg_video": "Видеофайлы",
-        "cfg_token": "GitHub токен",
         "cfg_reset": "Сброс настроек",
         "cfg_back": "Назад",
         "vault_title": "=== Настройки контейнера ===",
@@ -206,10 +205,6 @@ TEXT = {
         "lang_prompt": "Язык (ru / en): ",
         "api_prompt": "Данные API (api_key=...&user_id=...) или 'off': ",
         "bad_format": "Неверный формат.",
-        "token_prompt": "GitHub token (ghp_...) или 'off': ",
-        "token_invalid": "Токен отклонен GitHub. Настройки не изменены.",
-        "token_denied": "Доступ запрещен: токен принадлежит {login}.",
-        "token_saved": "Токен администратора {login} сохранен локально.",
         "reset_confirm": "Сбросить настройки? API-ключи будут удалены (y/N): ",
         "reset_done": "Настройки сброшены.",
         "score_prompt": "Минимальный рейтинг: ",
@@ -299,7 +294,6 @@ TEXT = {
         "bl_set": "Черный список: {status}",
         "bl_list_hdr": "Черный список [{state}]: {tags}",
         "net_page_warning": "Связь с сервером прервана при поиске страниц. Загрузка продолжена с найденными постами.",
-        "net_token_error": "Ошибка сети при проверке токена GitHub. Проверьте подключение.",
     },
     "en": {
         "vault_lbl": "Vault", "syntax_hdr": "Syntax:", "cmd_hdr": "Commands:",
@@ -312,7 +306,6 @@ TEXT = {
         "cmd_video": "download videos ({val})",
         "cmd_info": "storage & usage manual", "cmd_list": "list vault contents",
         "cmd_set": "configuration & vault settings", "cmd_update": "check for updates",
-        "cmd_push": "deploy patch to gist",
         "cmd_clean": "purge storage folder", "cmd_exit": "clear / exit",
         "on": "on", "off": "off", "active": "ACTIVE", "offline": "OFFLINE",
         "attached": "ATTACHED", "none": "NONE",
@@ -345,10 +338,6 @@ TEXT = {
         "lang_prompt": "Language (ru / en): ",
         "api_prompt": "API credentials (api_key=...&user_id=...) or 'off': ",
         "bad_format": "Invalid format.",
-        "token_prompt": "GitHub token (ghp_...) or 'off': ",
-        "token_invalid": "GitHub rejected the token. Settings were not changed.",
-        "token_denied": "Access denied: the token belongs to {login}.",
-        "token_saved": "Administrator token for {login} saved locally.",
         "reset_confirm": "Reset settings? API keys will be removed (y/N): ",
         "reset_done": "Settings reset.",
         "score_prompt": "Minimum score: ",
@@ -415,7 +404,6 @@ TEXT = {
         "bl_set": "Blacklist: {status}",
         "bl_list_hdr": "Blacklist [{state}]: {tags}",
         "net_page_warning": "Server connection interrupted while scanning pages. Proceeding with collected posts.",
-        "net_token_error": "Network error while verifying GitHub token. Check connection.",
         "archive_empty": "Archive {name} is empty or missing.",
         "archive_read_error": "Could not read the archive. Check the password.",
         "staging_busy": "Another download is already using the _staging directory.",
@@ -491,7 +479,7 @@ def load_config():
         data["default_count"] = max(1, int(data["default_count"]))
     except (TypeError, ValueError):
         data["default_count"] = DEFAULTS["default_count"]
-    for key in ("api_key", "user_id", "gel_api_key", "gel_user_id", "github_token", "vault_pass"):
+    for key in ("api_key", "user_id", "gel_api_key", "gel_user_id", "vault_pass"):
         data[key] = unprotect_secret(data[key])
     data["filter_ai"] = bool(data["filter_ai"])
     data["lang"] = data["lang"] if data["lang"] in TEXT else "ru"
@@ -511,7 +499,7 @@ def load_config():
 cfg = load_config()
 secrets = {
     key: cfg.pop(key, "")
-    for key in ("api_key", "user_id", "gel_api_key", "gel_user_id", "github_token", "vault_pass")
+    for key in ("api_key", "user_id", "gel_api_key", "gel_user_id", "vault_pass")
 }
 local = threading.local()
 class InterProcessLock:
@@ -831,8 +819,6 @@ def print_banner():
     print(f"    list            — {t('cmd_list')}")
     print(f"    set             — {t('cmd_set')}")
     print(f"    update          — {t('cmd_update')}")
-    if is_admin():
-        print(f"    push            — {t('cmd_push')}")
     print(f"    clean all       — {t('cmd_clean')}")
     print(f"    clear / exit    — {t('cmd_exit')}\n")
 
@@ -849,6 +835,7 @@ def show_info():
     print(f"\n\033[36m{t('info_purpose')}\033[0m\n{t('info_purpose_desc')}")
     print(f"\n\033[36m{t('info_api')}\033[0m\n{t('info_api_desc')}")
     print(f"\n\033[36m{t('info_security')}\033[0m\n{t('info_security_desc')}")
+    print(f"\n\033[36mАвтор / Author:\033[0m {AUTHOR} ({AUTHOR_GITHUB})")
     input(f"\n\033[90m{t('press_enter')}\033[0m")
 
 
@@ -880,7 +867,7 @@ def check_auto_update(silent=True):
         if not match:
             raise ValueError(t("update_missing_version"))
         remote_version = match.group(1)
-        if not ("NeverSearch" in response.text and "GIST_ID" in response.text):
+        if not ("NeverSearch" in response.text and "vanadeyS" in response.text):
             raise ValueError("Payload signature mismatch.")
         if parse_version(remote_version) > parse_version(VERSION):
             print(f"\n\033[32m[+] OTA Update: v{remote_version}\033[0m")
@@ -899,120 +886,6 @@ def check_auto_update(silent=True):
     if not silent:
         time.sleep(1)
 
-
-def authenticate_admin():
-    token = getpass.getpass(t("token_prompt")).strip()
-    if not token or token.lower() in ("off", "0", "exit"):
-        return
-    try:
-        identity = requests.get(
-            "https://api.github.com/user",
-            headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
-            timeout=10,
-        )
-        if identity.status_code in (401, 403):
-            print(f"[-] {t('token_invalid')}")
-            time.sleep(1.5)
-            return
-        identity.raise_for_status()
-        login = identity.json().get("login", "")
-    except requests.RequestException:
-        print(f"[-] {t('net_token_error')}")
-        time.sleep(1.5)
-        return
-    except ValueError:
-        print(f"[-] {t('token_invalid')}")
-        time.sleep(1.5)
-        return
-    if login.casefold() != ADMIN_LOGIN.casefold():
-        print(f"[-] {t('token_denied', login=login or '?')}")
-        time.sleep(1.5)
-        return
-    secrets["github_token"] = token
-    save_cfg()
-    print(f"[+] {t('token_saved', login=login)}")
-    time.sleep(1)
-
-
-def run_ota_push():
-    token = secret("github_token").strip()
-    if not token:
-        print("[-] Missing GitHub token.")
-        time.sleep(1.5)
-        return
-    try:
-        identity = requests.get(
-            "https://api.github.com/user",
-            headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
-            timeout=10,
-        )
-        identity.raise_for_status()
-        login = identity.json().get("login", "")
-    except (requests.RequestException, ValueError) as error:
-        print(f"[-] Authorization error: {error}")
-        time.sleep(2)
-        return
-    if login.casefold() != ADMIN_LOGIN.casefold():
-        print("[-] Access denied: administrator account required.")
-        time.sleep(2)
-        return
-    source_path = Path(__file__).resolve()
-    local_source = Path("r34_gallery.py")
-    if local_source.is_file() and local_source.resolve() != source_path:
-        local_source = local_source.resolve()
-        source_path = local_source
-    source = source_path.read_text(encoding="utf-8")
-    match = re.search(r'^VERSION\s*=\s*["\'](\d+)\.(\d+)\.(\d+)["\']', source, re.MULTILINE)
-    if not match:
-        print("[-] Version format mismatch.")
-        time.sleep(1.5)
-        return
-    major, minor, patch = map(int, match.groups())
-    patch += 1
-    if patch >= 10:
-        patch = 0
-        minor += 1
-    if minor >= 100:
-        minor = 0
-        major += 1
-    version = f"{major}.{minor:02d}.{patch:02d}"
-    version_pattern = re.compile(r'^VERSION\s*=\s*["\'][^"\']+["\']', re.MULTILINE)
-    published = version_pattern.sub(f'VERSION = "{version}"', source)
-    for key in ("api_key", "user_id", "gel_api_key", "gel_user_id", "github_token"):
-        published = re.sub(rf'"{key}":\s*"[^"]*"', f'"{key}": ""', published)
-    files = {"r34_gallery.py": {"content": published}}
-    installers = {
-        "NeverSearch_beta.py": source_path.with_name("NeverSearch_beta.py"),
-        "install_termux.sh": source_path.with_name("install_termux.sh"),
-        "install_windows.ps1": source_path.with_name("install_windows.ps1"),
-        "README.md": source_path.with_name("README.md"),
-    }
-    for name, path in installers.items():
-        if path.is_file():
-            files[name] = {"content": path.read_text(encoding="utf-8")}
-    compile(published, str(source_path), "exec")
-    print(f"[*] Deploying v{version} -> Gist...")
-    try:
-        response = requests.patch(
-            f"https://api.github.com/gists/{GIST_ID}",
-            headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
-            json={"files": files},
-            timeout=15,
-        )
-        response.raise_for_status()
-    except requests.RequestException as error:
-        print(f"[-] Deploy error: {error}")
-        time.sleep(2)
-        return
-    replace_program(version_pattern.sub(f'VERSION = "{version}"', source))
-
-    print(f"\033[32m[+] Published: v{version}\033[0m")
-    time.sleep(1)
-    if os.name == "nt":
-        subprocess.Popen([sys.executable, str(source_path)])
-        sys.exit(0)
-    else:
-        os.execv(sys.executable, [sys.executable, str(source_path)])
 
 
 def safe_component(value):
@@ -1507,7 +1380,6 @@ def settings_menu():
         else:
             hook = bool(secret("api_key") and secret("user_id"))
         hook_text = f"\033[32m{t('active')}\033[0m" if hook else f"\033[31m{t('offline')}\033[0m"
-        token_text = f"\033[32m{t('attached')}\033[0m" if secret("github_token") else f"\033[31m{t('none')}\033[0m"
         src_label = current_provider()["name"]
         bl_status = t("on").upper() if cfg.get("filter_bl", True) else t("off").upper()
         bl_len = len(cfg.get("blacklist", []))
@@ -1525,13 +1397,8 @@ def settings_menu():
         th_lbl = cfg.get('theme', 'blue').upper()
         print(f" 10. {t('cfg_video_mode')}        : {v_mode_lbl} [on / off / only]")
         print(f" 11. {t('cfg_theme')}  : {th_lbl} [mono / blue]")
-        if is_admin():
-            print(f" 12. {t('cfg_token')}    : {token_text}")
-            print(f" 13. {t('cfg_reset')}")
-            print(f" 14. \033[31m{t('cfg_uninstall')}\033[0m")
-        else:
-            print(f" 12. {t('cfg_reset')}")
-            print(f" 13. \033[31m{t('cfg_uninstall')}\033[0m")
+        print(f" 12. {t('cfg_reset')}")
+        print(f" 13. \033[31m{t('cfg_uninstall')}\033[0m")
         print(f" 0. {t('cfg_back')}\n")
         choice = input("cfg> ").strip()
         if choice == "1":
@@ -1640,33 +1507,7 @@ def settings_menu():
             save_cfg()
             print(f"[+] {t('theme_switched', name=new_th.upper())}")
             time.sleep(1)
-        elif choice == "12" and is_admin():
-            token = getpass.getpass(t("token_prompt")).strip()
-            if token.lower() in ("off", "0"):
-                secrets["github_token"] = ""
-                save_cfg()
-                continue
-            try:
-                identity = requests.get(
-                    "https://api.github.com/user",
-                    headers={"Authorization": f"Bearer {token}", "Accept": "application/vnd.github+json"},
-                    timeout=10,
-                )
-                identity.raise_for_status()
-                login = identity.json().get("login", "")
-            except (requests.RequestException, ValueError):
-                print(f"[-] {t('token_invalid')}")
-                time.sleep(2)
-                continue
-            if login.casefold() != ADMIN_LOGIN.casefold():
-                print(f"[-] {t('token_denied', login=login or '?')}")
-                time.sleep(2)
-                continue
-            secrets["github_token"] = token
-            save_cfg()
-            print(f"[+] {t('token_saved', login=login)}")
-            time.sleep(1)
-        elif (choice == "13" and is_admin()) or (choice == "12" and not is_admin()):
+        elif choice == "12":
             if input(t("reset_confirm")).strip().lower() != "y":
                 print(t("cancelled"))
                 time.sleep(1)
@@ -1685,7 +1526,7 @@ def settings_menu():
             save_cfg()
             print(f"[+] {t('reset_done')}")
             time.sleep(1)
-        elif (choice == "14" and is_admin()) or (choice == "13" and not is_admin()):
+        elif choice == "13":
             if uninstall():
                 raise SystemExit(0)
         elif choice.lower() in ("0", "q", "exit", "back"):
@@ -1703,8 +1544,6 @@ class TagCompleter(Completer):
             return
         command = tokens[0].lower()
         commands = {"score", "count", "clean", "clear", "cls", "exit", "quit", "q", "list", "set", "settings", "update", "info", "help", "man", "src", "source", "bl", "blacklist"}
-        if is_admin():
-            commands.add("push")
         if command in commands:
             return
         if command == "video":
@@ -1928,10 +1767,6 @@ def main():
                 time.sleep(1)
             elif command == "update":
                 check_auto_update(silent=False)
-            elif command in ("admin", "auth"):
-                authenticate_admin()
-            elif command == "push" and is_admin():
-                run_ota_push()
             elif command in ("set", "settings"): 
                 settings_menu()
             elif command in ("clear", "cls"):
