@@ -16,12 +16,12 @@
 
 ### Архитектура безопасности и модель угроз
 
-NeverSearch спроектирован как полностью автономная утилита без внешних зависимостей, обеспечивающая приватность данных на локальном устройстве:
+NeverSearch спроектирован как автономная консольная утилита с минимальным набором проверенных зависимостей (`requests`, `prompt_toolkit`, `7-Zip`):
 
 1. **Шифрование хранилища (AES-256)**:
    - Все медиафайлы упаковываются в зашифрованный контейнер 7-Zip (`Bible.7z`).
    - Используется алгоритм AES-256 с обязательным шифрованием заголовков (`-mhe=on`). Без знания пароля невозможно просмотреть даже список файлов, их имена или размеры.
-   - Загруженные файлы собираются во временном каталоге (`_staging`), пакуются и безвозвратно удаляются с диска.
+   - Загруженные файлы собираются во временном каталоге (`_staging`), пакуются в архив и удаляются с диска стандартными средствами ОС (`shutil.rmtree`).
    - Атомарная перешифровка: при смене пароля создаётся временный архив (`.7z.new`), и только после успешной упаковки он подменяет старый файл.
 
 2. **Защита учётных данных и паролей**:
@@ -31,9 +31,9 @@ NeverSearch спроектирован как полностью автоном�
 3. **Проверка целостности обновлений (OTA SHA-256)**:
    - При выполнении команды `update` скачанный код сверяется с цифровым отпечатком `r34_gallery.py.sha256`. Если хеш не совпадает или манифест повреждён, обновление прерывается, а рабочий файл остаётся нетронутым.
 
-4. **Памятка пароля**:
-   - Посмотреть текущий пароль можно в консоли через меню `set` -> пункт 2 (`Показать текущий пароль`, клавиша `c` копирует в буфер обмена).
-   - При экспорте текстовой памятки `vault_password_backup.txt` не храните её в публичных папках или облачных каталогах (OneDrive, Google Drive).
+4. **Ограничения и рекомендации**:
+   - **Видимость процессов в ОС**: При упаковке через 7-Zip аргумент `-p<пароль>` передаётся через CLI. На многопользовательских shared-серверах это теоретически может быть видно другим локальным пользователям через `ps`. На персональных ПК (Windows) и смартфонах (Termux) процессы изолированы контекстом пользователя.
+   - **Памятка пароля**: Посмотреть текущий пароль можно в консоли через меню `set` -> пункт 2 (`Показать текущий пароль`, клавиша `c` копирует в буфер обмена). При экспорте `vault_password_backup.txt` храните его вне облачных папок (OneDrive).
 
 ---
 
@@ -49,12 +49,12 @@ NeverSearch спроектирован как полностью автоном�
 
 ### Security Architecture & Threat Model
 
-NeverSearch is designed as a standalone, zero-dependency client with strong local data privacy:
+NeverSearch is designed as a standalone client with minimal verified dependencies (`requests`, `prompt_toolkit`, `7-Zip`):
 
 1. **Vault Encryption (AES-256)**:
    - Media files are compressed and stored inside an encrypted 7-Zip container (`Bible.7z`).
    - Uses AES-256 with header encryption enabled (`-mhe=on`). Without the password, directory structure, file names, and file sizes are completely invisible to external inspection.
-   - Temporary files are processed in a local staging directory (`_staging`), packed, and securely wiped after archival.
+   - Temporary files are processed in a local staging directory (`_staging`), packed, and removed via OS filesystem cleanup (`shutil.rmtree`).
    - Atomic re-keying: Changing the vault password writes to a replacement archive (`.7z.new`) and swaps it with the primary archive only upon verified success.
 
 2. **Credential Protection**:

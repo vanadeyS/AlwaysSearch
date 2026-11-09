@@ -64,6 +64,9 @@ if hasattr(sys.stderr, "reconfigure"):
     except Exception:
         pass
 
+if __name__ == "__main__":
+    install_python_dependencies()
+
 try:
     import requests
 except ImportError:
@@ -91,13 +94,18 @@ def generate_simple_password():
         "echo", "ember", "falcon", "flame", "frost", "galaxy", "haven", "horizon",
         "matrix", "nebula", "nexus", "nova", "orbit", "pixel", "pulse", "quantum",
         "radar", "shadow", "solar", "spark", "star", "storm", "titan", "turbo",
-        "vector", "vortex", "winter", "wolf", "zenith", "crystal", "silver", "phoenix"
+        "vector", "vortex", "winter", "wolf", "zenith", "crystal", "silver", "phoenix",
+        "aurora", "breeze", "canyon", "clover", "coral", "dawn", "dune", "emerald",
+        "forest", "glacier", "grove", "island", "jasper", "lagoon", "lunar", "meadow",
+        "mystic", "ocean", "onyx", "opal", "polar", "rain", "river", "ruby",
+        "sable", "sapphire", "summit", "topaz", "valley", "velvet", "wave", "willow"
     ]
     w1 = sec_mod.choice(words)
     w2 = sec_mod.choice(words)
     w3 = sec_mod.choice(words)
+    w4 = sec_mod.choice(words)
     pin = sec_mod.randbelow(9000) + 1000
-    return f"{w1}-{w2}-{w3}-{pin}"
+    return f"{w1}-{w2}-{w3}-{w4}-{pin}"
 
 
 def copy_to_clipboard(text):
@@ -911,11 +919,14 @@ def render_banner():
     return "\n".join(rendered)
 
 
-STYLE = Style.from_dict({
-    "completion-menu.completion": "bg:#1c1c1c #cfcfcf",
-    "completion-menu.completion.current": "bg:#3a3a3a #ffffff bold",
-    "prompt": "#00d787 bold",
-})
+try:
+    STYLE = Style.from_dict({
+        "completion-menu.completion": "bg:#1c1c1c #cfcfcf",
+        "completion-menu.completion.current": "bg:#3a3a3a #ffffff bold",
+        "prompt": "#00d787 bold",
+    })
+except Exception:
+    STYLE = None
 
 
 def print_banner():

@@ -54,12 +54,11 @@ class TestCoreFunctions(unittest.TestCase):
         for _ in range(30):
             pw = ns.generate_simple_password()
             parts = pw.split("-")
-            self.assertEqual(len(parts), 4)
-            self.assertTrue(parts[0].isalpha())
-            self.assertTrue(parts[1].isalpha())
-            self.assertTrue(parts[2].isalpha())
-            self.assertTrue(parts[3].isdigit())
-            self.assertTrue(1000 <= int(parts[3]) <= 9999)
+            self.assertEqual(len(parts), 5)
+            for i in range(4):
+                self.assertTrue(parts[i].isalpha())
+            self.assertTrue(parts[4].isdigit())
+            self.assertTrue(1000 <= int(parts[4]) <= 9999)
 
     def test_resolve_paths(self):
         # Franchise-based tag
