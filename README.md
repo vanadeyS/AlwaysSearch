@@ -1,6 +1,6 @@
 # NeverSearch
 
-[![Latest Release](https://img.shields.io/github/v/release/vanadeyS/AlwaysSearch?color=brightgreen)](https://github.com/vanadeyS/AlwaysSearch/releases)
+[![Latest Version](https://img.shields.io/github/v/tag/vanadeyS/AlwaysSearch?color=brightgreen&label=version)](https://github.com/vanadeyS/AlwaysSearch/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android%20(Termux)-informational.svg)](#-быстрая-установка-1-команда)
 
@@ -53,10 +53,11 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 ### ⚙️ Первый запуск
 
-При самом первом старте NeverSearch последовательно предложит:
-1. **Выбрать язык** интерфейса (`ru` или `en`).
-2. **Задать пароль хранилища** (по умолчанию `v1zhik`, рекомендуется сразу ввести свой для надёжного шифрования).
-3. **Подключить API** (для Rule34 ключ не требуется, для Gelbooru обязателен — настраивается через меню `set` → пункт 3).
+При первом старте NeverSearch запросит:
+1. **Выбор языка** интерфейса (`ru` или `en`).
+2. **Пароль хранилища** (по умолчанию `v1zhik`, рекомендуется сразу ввести свой).
+
+*Дальше при необходимости подключите API: команда `set` → пункт 3 (для Rule34 ключ не требуется, для Gelbooru обязателен).*
 
 ### Таблица команд
 
@@ -132,10 +133,11 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 ### ⚙️ First Run
 
-On the very first launch, NeverSearch will prompt you to:
-1. **Select interface language** (`ru` or `en`).
-2. **Set vault password** (default is `v1zhik`, setting a custom one is highly recommended).
-3. **Configure API credentials** (Rule34 does not require a key; Gelbooru requires credentials via `set` menu → option 3).
+On the very first launch, NeverSearch will prompt for:
+1. **Interface language** (`ru` or `en`).
+2. **Vault password** (default is `v1zhik`, setting a custom one is recommended).
+
+*Optionally configure API keys afterwards: command `set` → option 3 (optional for Rule34, required for Gelbooru).*
 
 ### Command Reference
 

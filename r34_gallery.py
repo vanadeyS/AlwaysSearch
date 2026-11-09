@@ -642,16 +642,17 @@ def protect_secret(value):
     return "dpapi:" + base64.b64encode(encrypted).decode("ascii")
 
 
-def save_cfg():
+def save_cfg(merge=True):
     CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
     existing = {}
-    try:
-        if CONFIG_PATH.is_file():
-            raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-            if isinstance(raw, dict):
-                existing = raw
-    except Exception:
-        pass
+    if merge:
+        try:
+            if CONFIG_PATH.is_file():
+                raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+                if isinstance(raw, dict):
+                    existing = raw
+        except Exception:
+            pass
     stored = dict(cfg)
     stored.update({key: protect_secret(secret(key)) for key in secrets})
     existing.update(stored)
@@ -1577,7 +1578,7 @@ def settings_menu():
                 secrets[key] = DEFAULTS[key]
             if kept_vault_pass:
                 secrets["vault_pass"] = kept_vault_pass
-            save_cfg()
+            save_cfg(merge=False)
             print(f"[+] {t('reset_done')}")
             time.sleep(1)
         elif choice == "13":
