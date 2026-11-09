@@ -80,7 +80,7 @@ except ImportError:
     prompt = input
     Completer = Completion = ThreadedCompleter = Style = object
 
-VERSION = "1.05.06"
+VERSION = "1.05.07"
 UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py"
 AUTHOR = "vanadeyS"
 AUTHOR_GITHUB = "https://github.com/vanadeyS"
@@ -688,7 +688,8 @@ def is_pid_running(pid):
 def get_vault_lock_path():
     base = get_staging_dir().parent
     base.mkdir(parents=True, exist_ok=True)
-    return base / f"{vault_name()}.lock"
+    v_name = cfg.get("vault_name", "Bible") if isinstance(cfg, dict) else "Bible"
+    return base / f"{v_name}.lock"
 
 
 def get_staging_dir():

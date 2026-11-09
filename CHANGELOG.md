@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.05.07] - 2026-11-10
+
+### Fixed
+- **NameError in Lock Resolver**:
+  - Fixed `get_vault_lock_path()` referencing nonexistent `vault_name()` helper instead of reading config key `cfg.get("vault_name", "Bible")`.
+  - Canonical LF SHA-256 manifest hash calculation in deployer.
+
+---
+
 ## [1.05.06] - 2026-11-10
 
 ### Fixed
