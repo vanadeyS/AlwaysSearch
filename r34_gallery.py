@@ -80,7 +80,7 @@ except ImportError:
     prompt = input
     Completer = Completion = ThreadedCompleter = Style = object
 
-VERSION = "1.05.05"
+VERSION = "1.05.06"
 UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py"
 AUTHOR = "vanadeyS"
 AUTHOR_GITHUB = "https://github.com/vanadeyS"
@@ -608,8 +608,8 @@ secrets = {
 }
 local = threading.local()
 class InterProcessLock:
-    def __init__(self, lock_file):
-        self.lock_file = Path(lock_file)
+    def __init__(self, lock_file=None):
+        self.lock_file = Path(lock_file) if lock_file else get_vault_lock_path()
         self.fp = None
 
     def __enter__(self):
@@ -623,8 +623,10 @@ class InterProcessLock:
                     self.fp.seek(0)
                     msvcrt.locking(self.fp.fileno(), msvcrt.LK_NBLCK, 1)
                     break
-                except OSError:
-                    if time.time() - start > 30:
+                except OSError as e:
+                    if getattr(e, "errno", None) not in (errno.EACCES, errno.EDEADLK):
+                        break
+                    if time.time() - start > 10:
                         raise TimeoutError("Vault is locked by another process.")
                     time.sleep(0.2)
         else:
@@ -634,8 +636,11 @@ class InterProcessLock:
                 try:
                     fcntl.flock(self.fp.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
                     break
-                except (BlockingIOError, OSError):
-                    if time.time() - start > 30:
+                except (BlockingIOError, OSError) as e:
+                    err = getattr(e, "errno", None)
+                    if err in (errno.ENOSYS, errno.EOPNOTSUPP, getattr(errno, "ENOTSUP", None), errno.EINVAL):
+                        break
+                    if time.time() - start > 10:
                         raise TimeoutError("Vault is locked by another process.")
                     time.sleep(0.2)
         return self
@@ -680,6 +685,12 @@ def is_pid_running(pid):
             return False
 
 
+def get_vault_lock_path():
+    base = get_staging_dir().parent
+    base.mkdir(parents=True, exist_ok=True)
+    return base / f"{vault_name()}.lock"
+
+
 def get_staging_dir():
     if os.name == "nt":
         base = os.environ.get("LOCALAPPDATA") or str(Path.home() / "AppData" / "Local")
@@ -698,19 +709,19 @@ def clean_stale_staging():
             raw = pid_file.read_text(encoding="utf-8").strip()
             parts = raw.split(":")
             pid = int(parts[0])
-            if not is_pid_running(pid):
+            if pid == os.getpid() or not is_pid_running(pid):
                 is_stale = True
         except Exception:
             is_stale = True
     else:
         try:
-            if time.time() - staging.stat().st_mtime > 1800:
+            if time.time() - staging.stat().st_mtime > 120:
                 is_stale = True
         except Exception:
-            pass
+            is_stale = True
     if is_stale:
         shutil.rmtree(staging, ignore_errors=True)
-        return True
+        return not staging.exists()
     return False
 
 
@@ -1386,7 +1397,7 @@ def download_tag(raw_tag, count, artist=False):
             print(f"[-] {t('download_failed')}")
             return
 
-        with archive_lock, InterProcessLock(archive.with_suffix(".lock")):
+        with archive_lock, InterProcessLock(get_vault_lock_path()):
             result = run_7z(
                 ["a", f"-p{vault_password()}", "-mhe=on", "-mx0", "--", str(archive), f"./{franchise}"],
                 cwd=staging,
@@ -1452,7 +1463,7 @@ def change_password():
         time.sleep(1.5)
         return
     if archive.exists():
-        with archive_lock, InterProcessLock(archive.with_suffix(".lock")):
+        with archive_lock, InterProcessLock(get_vault_lock_path()):
             temporary = ROOT_DIR / "_rekey_tmp"
             shutil.rmtree(temporary, ignore_errors=True)
             temporary.mkdir(parents=True)
@@ -2121,7 +2132,7 @@ def main():
         except Exception as error:
             log_error(traceback.format_exc())
             print(f"[-] Error: {mask_credentials(error)}")
-            time.sleep(2)
+            time.sleep(4)
             print_banner()
 
 

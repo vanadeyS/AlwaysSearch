@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.05.06] - 2026-11-10
+
+### Fixed
+- **FUSE / Android Storage Locking**:
+  - Moved `.lock` file from external storage (`/storage/emulated/0/...`) to local ext4 directory (`~/.Bible.lock` on Termux / `%LOCALAPPDATA%` on Windows).
+  - Added graceful fallback for filesystems lacking POSIX `flock` support (`ENOSYS`, `EOPNOTSUPP`, `EINVAL`), preventing false 30-second `TimeoutError` hangs.
+- **Stale Staging Lock in Same Process**:
+  - Fixed `clean_stale_staging()` to automatically purge leftover `_staging` directories belonging to the current process (`pid == os.getpid()`), eliminating false "Another process is already using _staging" blocks after interrupted downloads.
+- **Windows Installer Compatibility**:
+  - `install_windows.ps1` now strictly validates Python 3.8+ via `Test-ValidPython3` and ignores bundled ancient Python 2.7 from OpenOffice, LibreOffice, and GIMP.
+  - Safe error handling in PowerShell during dependency installation (`ensurepip` stderr suppression).
+
+---
+
 ## [1.05.05] - 2026-11-09
 
 ### Added
