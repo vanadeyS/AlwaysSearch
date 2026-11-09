@@ -12,22 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - **Vault Password UX**:
   - Removed insecure default password on initial startup.
-  - Added simple memorable password generator (`word-number` format, e.g. `star-449`, `tiger-197`) that is easy to remember and mistype-resistant.
-  - Added menu option `3. Показать текущий пароль` (`Show current password`) in Vault settings (`set -> 2 -> 3`).
-  - Added menu option `4. Экспорт пароля в файл` (`Export password to file`) in Vault settings (`set -> 2 -> 4`) generating `vault_password_backup.txt`.
+  - Added cryptographic Diceware password generator (`word-word-word-pin` format using standard `secrets` module, e.g. `frost-tiger-orbit-7429`) offering 40+ bits of entropy with human readability.
+  - Added menu option `3. Показать текущий пароль` (`Show current password`) in Vault settings (`set -> 2 -> 3`) with one-key clipboard copying (`[c]` via Windows `clip` / Termux `termux-clipboard-set`).
+  - Added centralized `export_password_backup()` helper creating `vault_password_backup.txt` (default prompt changed to `y/N`, POSIX permissions `0o600`).
   - Automatic synchronization of `vault_password_backup.txt` on password change (`change_password`).
 - **OTA Integrity Check**:
-  - Added SHA-256 integrity verification (`r34_gallery.py.sha256`) during OTA update before applying or compiling updates.
+  - Added strict SHA-256 integrity verification (`r34_gallery.py.sha256`) during OTA update. Aborts update with clear error if manifest is unreachable, corrupt, or digest mismatches.
 - **Unit Test Suite**:
-  - Added test suite in `tests/test_core.py` covering core pure functions (`safe_component`, `normalize_tag`, `requested_limit`, `parse_version`, `resolve_paths`, `generate_simple_password`, and `sha256_verification`).
-  - Compatible with standard stdlib `unittest` and `pytest`.
-- **CI / GitHub Actions**:
-  - Added `.github/workflows/ci.yml` running unit tests and linting across Python 3.10, 3.11, and 3.12.
+  - Added test suite in `tests/test_core.py` (8/8 tests passed) covering `safe_component`, `normalize_tag`, `requested_limit`, `parse_version`, `resolve_paths`, Diceware password generator, SHA-256 verification, and repo hash synchronization.
+  - Fully compatible with standard stdlib `unittest` and `pytest`.
+  - Import-safe: deferred `install_python_dependencies` to runtime `main()`, avoiding subprocess `pip` execution during test imports.
 - **Security Guide**:
-  - Added `SECURITY.md` documenting encryption boundaries and credential safety.
+  - Added bilingual `SECURITY.md` (Русский + English) documenting encryption architecture, DPAPI, and threat model.
 
 ### Fixed
 - Fixed backslash escaping in `safe_component` regex character class preventing path traversal on Windows.
+- Clean exit (`sys.exit(0)`) on `Ctrl+C` interrupt during initial vault setup.
 
 ---
 

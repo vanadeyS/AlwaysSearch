@@ -53,12 +53,13 @@ class TestCoreFunctions(unittest.TestCase):
     def test_generate_simple_password(self):
         for _ in range(30):
             pw = ns.generate_simple_password()
-            self.assertGreaterEqual(len(pw), 6)
-            self.assertIn("-", pw)
-            word, num = pw.split("-", 1)
-            self.assertTrue(word.isalpha())
-            self.assertTrue(num.isdigit())
-            self.assertTrue(100 <= int(num) <= 999)
+            parts = pw.split("-")
+            self.assertEqual(len(parts), 4)
+            self.assertTrue(parts[0].isalpha())
+            self.assertTrue(parts[1].isalpha())
+            self.assertTrue(parts[2].isalpha())
+            self.assertTrue(parts[3].isdigit())
+            self.assertTrue(1000 <= int(parts[3]) <= 9999)
 
     def test_resolve_paths(self):
         # Franchise-based tag
@@ -79,6 +80,15 @@ class TestCoreFunctions(unittest.TestCase):
         tampered_data = b"NeverSearch test payload content [TAMPERED]"
         tampered_sha = hashlib.sha256(tampered_data).hexdigest()
         self.assertNotEqual(tampered_sha, expected_sha)
+
+    def test_repo_sha256_matches_source(self):
+        root = Path(__file__).resolve().parent.parent
+        src_file = root / "r34_gallery.py"
+        sha_file = root / "r34_gallery.py.sha256"
+        if src_file.is_file() and sha_file.is_file():
+            actual = hashlib.sha256(src_file.read_bytes()).hexdigest().lower()
+            expected = sha_file.read_text(encoding="utf-8").strip().split()[0].lower()
+            self.assertEqual(actual, expected, "r34_gallery.py.sha256 is out of sync with r34_gallery.py!")
 
 
 if __name__ == "__main__":

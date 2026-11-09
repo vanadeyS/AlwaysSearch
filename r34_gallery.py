@@ -17,6 +17,7 @@ import py_compile
 import os
 import random
 import re
+import secrets as sec_mod
 import shutil
 import subprocess
 import sys
@@ -52,8 +53,6 @@ def install_python_dependencies():
     importlib.invalidate_caches()
 
 
-install_python_dependencies()
-
 if hasattr(sys.stdout, "reconfigure"):
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -65,10 +64,18 @@ if hasattr(sys.stderr, "reconfigure"):
     except Exception:
         pass
 
-import requests
-from prompt_toolkit import prompt
-from prompt_toolkit.completion import Completer, Completion, ThreadedCompleter
-from prompt_toolkit.styles import Style
+try:
+    import requests
+except ImportError:
+    requests = None
+
+try:
+    from prompt_toolkit import prompt
+    from prompt_toolkit.completion import Completer, Completion, ThreadedCompleter
+    from prompt_toolkit.styles import Style
+except ImportError:
+    prompt = input
+    Completer = Completion = ThreadedCompleter = Style = object
 
 VERSION = "1.05.05"
 UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py"
@@ -80,12 +87,64 @@ LEGACY_DEFAULT_PASSWORD = "v1zhik"
 
 def generate_simple_password():
     words = [
-        "vault", "star", "wolf", "cyber", "solar", "frost", "pixel", "nexus",
-        "shadow", "flame", "tiger", "storm", "delta", "haven", "spark", "echo",
-        "alpha", "turbo", "pulse", "orbit"
+        "amber", "atlas", "blaze", "cedar", "cipher", "comet", "cosmo", "delta",
+        "echo", "ember", "falcon", "flame", "frost", "galaxy", "haven", "horizon",
+        "matrix", "nebula", "nexus", "nova", "orbit", "pixel", "pulse", "quantum",
+        "radar", "shadow", "solar", "spark", "star", "storm", "titan", "turbo",
+        "vector", "vortex", "winter", "wolf", "zenith", "crystal", "silver", "phoenix"
     ]
-    num = random.randint(100, 999)
-    return f"{random.choice(words)}-{num}"
+    w1 = sec_mod.choice(words)
+    w2 = sec_mod.choice(words)
+    w3 = sec_mod.choice(words)
+    pin = sec_mod.randbelow(9000) + 1000
+    return f"{w1}-{w2}-{w3}-{pin}"
+
+
+def copy_to_clipboard(text):
+    text = str(text or "")
+    if not text:
+        return False
+    try:
+        if os.name == "nt":
+            p = subprocess.Popen(["clip"], stdin=subprocess.PIPE, shell=True)
+            p.communicate(input=text.encode("utf-16le" if sys.platform == "win32" else "utf-8"))
+            return True
+        if shutil.which("termux-clipboard-set"):
+            subprocess.run(["termux-clipboard-set"], input=text.encode("utf-8"), check=False)
+            return True
+        if shutil.which("xclip"):
+            subprocess.run(["xclip", "-selection", "clipboard"], input=text.encode("utf-8"), check=False)
+            return True
+    except Exception:
+        pass
+    return False
+
+
+def export_password_backup(password, dest_path=None):
+    if not password:
+        return None
+    dest = Path(dest_path) if dest_path else ROOT_DIR / "vault_password_backup.txt"
+    try:
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        content = (
+            f"NeverSearch Vault Password Backup\n"
+            f"=================================\n"
+            f"Archive  : {vault_path().name}\n"
+            f"Password : {password}\n"
+            f"Path     : {vault_path()}\n"
+            f"Updated  : {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+            f"Note: Keep this file in a safe private location (not public/cloud).\n"
+            f"Use this password to open {vault_path().name} manually in 7-Zip.\n"
+        )
+        dest.write_text(content, encoding="utf-8")
+        try:
+            if os.name != "nt":
+                dest.chmod(0o600)
+        except OSError:
+            pass
+        return dest
+    except Exception:
+        return None
 
 
 def get_root_dir():
@@ -289,7 +348,11 @@ TEXT = {
         "pass_repeat_init": "Повторите пароль архива: ",
         "pass_short": "Пароль слишком короткий (минимум 4 символа).",
         "pass_set_ok": "Пароль установлен и сохранён в ~/.r34_config.json",
-        "ask_save_backup": "Сохранить резервную копию пароля в vault_password_backup.txt? (Y/n): ",
+        "ask_save_backup": "Сохранить резервную копию пароля в vault_password_backup.txt? (y/N): ",
+        "copy_clipboard": "скопировать пароль в буфер обмена [c]",
+        "copied_ok": "Пароль скопирован в буфер обмена!",
+        "copy_fail": "Не удалось скопировать (утилита clip недоступна).",
+        "backup_error": "Не удалось записать резервную копию.",
         "vault_show_pass": "Показать текущий пароль",
         "vault_show_hint": "посмотреть ключ",
         "vault_backup_pass": "Экспорт пароля в файл",
@@ -408,7 +471,11 @@ TEXT = {
         "pass_repeat_init": "Repeat vault password: ",
         "pass_short": "Password too short (min 4 chars).",
         "pass_set_ok": "Password set and saved in ~/.r34_config.json",
-        "ask_save_backup": "Save password backup note to vault_password_backup.txt? (Y/n): ",
+        "ask_save_backup": "Save password backup note to vault_password_backup.txt? (y/N): ",
+        "copy_clipboard": "copy password to clipboard [c]",
+        "copied_ok": "Password copied to clipboard!",
+        "copy_fail": "Clipboard copy failed.",
+        "backup_error": "Failed to write backup note.",
         "vault_show_pass": "Show current password",
         "vault_show_hint": "reveal key",
         "vault_backup_pass": "Export password to file",
@@ -933,16 +1000,29 @@ def check_auto_update(silent=True):
             ans = sys.stdin.readline().strip().lower()
             if ans in ("", "y", "yes", "д", "да"):
                 # SHA-256 integrity verification
+                sha_verified = False
                 try:
                     sha_resp = get(f"{UPDATE_URL}.sha256?t={int(time.time())}", headers={"Cache-Control": "no-cache"}, timeout=10)
                     expected_sha = sha_resp.text.strip().split()[0].lower()
                     actual_sha = hashlib.sha256(response.content).hexdigest().lower()
                     if expected_sha and len(expected_sha) == 64:
-                        if actual_sha != expected_sha:
+                        if actual_sha == expected_sha:
+                            sha_verified = True
+                        else:
                             raise ValueError(f"SHA-256 mismatch (expected {expected_sha[:8]}..., got {actual_sha[:8]}...)")
-                except requests.RequestException:
-                    pass
-                print(f"\033[32m[+] OTA Update: v{remote_version} (SHA-256 verified)\033[0m")
+                    else:
+                        raise ValueError("Invalid remote SHA-256 manifest.")
+                except Exception as err:
+                    print(f"\033[31m[-] Integrity check failed: {err}\033[0m")
+                    if not silent:
+                        time.sleep(2)
+                    return
+
+                if not sha_verified:
+                    print("\033[31m[-] Update rejected: SHA-256 verification failed.\033[0m")
+                    return
+
+                print(f"\033[32m[+] OTA Update: v{remote_version} (SHA-256 verified: {actual_sha[:8]}...)\033[0m")
                 replace_program(response.text)
                 target_file = str(Path(__file__).resolve())
                 if os.name == "nt":
@@ -1386,20 +1466,8 @@ def change_password():
     save_cfg()
     backup_file = ROOT_DIR / "vault_password_backup.txt"
     if backup_file.is_file():
-        try:
-            backup_content = (
-                f"NeverSearch Vault Password Backup\n"
-                f"=================================\n"
-                f"Archive  : {vault_path().name}\n"
-                f"Password : {new}\n"
-                f"Path     : {vault_path()}\n"
-                f"Updated  : {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-                f"Use this password to open the archive manually in 7-Zip.\n"
-            )
-            backup_file.write_text(backup_content, encoding="utf-8")
-            print(f"[*] {t('backup_updated', path=backup_file)}")
-        except Exception:
-            pass
+        export_password_backup(new, backup_file)
+        print(f"[*] {t('backup_updated', path=backup_file)}")
     print(f"[+] {t('password_changed')}")
     time.sleep(1)
 
@@ -1428,26 +1496,25 @@ def vault_settings():
             change_password()
         elif choice == "3":
             cur_pw = vault_password()
-            print(f"\n[*] {t('current_vault_pw')}: \033[36m{cur_pw}\033[0m")
-            input(f"\n{t('press_enter')}")
+            print()
+            print("  +" + "-" * 52 + "+")
+            print(f"  |  {t('current_vault_pw')}: \033[36m{cur_pw}\033[0m")
+            print("  +" + "-" * 52 + "+")
+            print(f"\n  [c] - {t('copy_clipboard')}\n  [Enter] - {t('cfg_back')}\n")
+            sub = input("vault/pass> ").strip().lower()
+            if sub in ("c", "copy", "с"):
+                if copy_to_clipboard(cur_pw):
+                    print(f"  [+] {t('copied_ok')}")
+                else:
+                    print(f"  [-] {t('copy_fail')}")
+                time.sleep(1.2)
         elif choice == "4":
             cur_pw = vault_password()
-            backup_file = ROOT_DIR / "vault_password_backup.txt"
-            try:
-                ROOT_DIR.mkdir(parents=True, exist_ok=True)
-                backup_content = (
-                    f"NeverSearch Vault Password Backup\n"
-                    f"=================================\n"
-                    f"Archive  : {vault_path().name}\n"
-                    f"Password : {cur_pw}\n"
-                    f"Path     : {vault_path()}\n"
-                    f"Date     : {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-                    f"Use this password to open the archive manually in 7-Zip.\n"
-                )
-                backup_file.write_text(backup_content, encoding="utf-8")
-                print(f"\n[+] {t('backup_saved', path=backup_file)}")
-            except Exception as err:
-                print(f"\n[-] Backup save failed: {err}")
+            saved_path = export_password_backup(cur_pw)
+            if saved_path:
+                print(f"\n[+] {t('backup_saved', path=saved_path)}")
+            else:
+                print(f"\n[-] {t('backup_error')}")
             input(f"\n{t('press_enter')}")
         elif choice == "5":
             cfg["folder_prefix"] = safe_component(input(t("prefix_prompt")))[:5]
@@ -1783,23 +1850,10 @@ def choose_language():
                     print("  |  You can reveal it anytime via menu: set -> 2 -> 3          |")
                 print("  +-------------------------------------------------------------+\n")
                 ask_b = input(t("ask_save_backup")).strip().lower()
-                if ask_b in ("", "y", "yes", "д", "да"):
-                    backup_file = ROOT_DIR / "vault_password_backup.txt"
-                    try:
-                        ROOT_DIR.mkdir(parents=True, exist_ok=True)
-                        backup_file.write_text(
-                            f"NeverSearch Vault Password Backup\n"
-                            f"=================================\n"
-                            f"Archive  : {cfg.get('vault_name', 'Bible')}.7z\n"
-                            f"Password : {gen_pass}\n"
-                            f"Path     : {vault_path()}\n"
-                            f"Created  : {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-                            f"Keep this file safe or delete after memorizing.\n",
-                            encoding="utf-8"
-                        )
-                        print(f"  [+] {t('backup_saved', path=backup_file)}")
-                    except Exception as err:
-                        print(f"  [-] Backup note error: {err}")
+                if ask_b in ("y", "yes", "д", "да"):
+                    saved_path = export_password_backup(gen_pass)
+                    if saved_path:
+                        print(f"  [+] {t('backup_saved', path=saved_path)}")
                 time.sleep(1.5)
                 break
             if len(custom_pass) < 4:
@@ -1813,26 +1867,14 @@ def choose_language():
             print(f"[+] {t('pass_set_ok')}")
             ask_b = input(t("ask_save_backup")).strip().lower()
             if ask_b in ("y", "yes", "д", "да"):
-                backup_file = ROOT_DIR / "vault_password_backup.txt"
-                try:
-                    ROOT_DIR.mkdir(parents=True, exist_ok=True)
-                    backup_file.write_text(
-                        f"NeverSearch Vault Password Backup\n"
-                        f"=================================\n"
-                        f"Archive  : {cfg.get('vault_name', 'Bible')}.7z\n"
-                        f"Password : {custom_pass}\n"
-                        f"Path     : {vault_path()}\n"
-                        f"Created  : {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n"
-                        f"Keep this file safe or delete after memorizing.\n",
-                        encoding="utf-8"
-                    )
-                    print(f"  [+] {t('backup_saved', path=backup_file)}")
-                except Exception as err:
-                    print(f"  [-] Backup note error: {err}")
+                saved_path = export_password_backup(custom_pass)
+                if saved_path:
+                    print(f"  [+] {t('backup_saved', path=saved_path)}")
             time.sleep(1.5)
             break
         except (KeyboardInterrupt, EOFError):
-            break
+            print(f"\n{t('shutdown')}")
+            sys.exit(0)
     save_cfg()
 
 
@@ -1910,6 +1952,11 @@ def ensure_launcher_command():
 
 
 def main():
+    global requests, prompt
+    if requests is None or prompt is input:
+        install_python_dependencies()
+        import requests as _req
+        requests = _req
     if not sys.stdin.isatty():
         print(t("interactive_only"))
         return 1
