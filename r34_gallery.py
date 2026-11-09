@@ -512,6 +512,7 @@ TEXT = {
         "archive_empty": "Archive {name} is empty or missing.",
         "archive_read_error": "Could not read the archive. Check the password.",
         "staging_busy": "Another download is already using the _staging directory.",
+        "lock_unsupported": "Warning: file locking is not supported by this filesystem.",
         "archive_open_error": "Could not open the archive. Check the password.",
         "download_failed": "No files were downloaded. The archive was not changed.",
         "archive_error": "7z error. Downloaded files were saved in {name}",
@@ -626,7 +627,7 @@ class InterProcessLock:
                     break
                 except OSError as e:
                     if getattr(e, "errno", None) not in (errno.EACCES, errno.EDEADLK):
-                        print("[-] Предупреждение: файловая блокировка не поддерживается файловой системой.")
+                        print(f"[-] {t('lock_unsupported')}")
                         break
                     if time.time() - start > self.timeout:
                         try:
@@ -645,7 +646,7 @@ class InterProcessLock:
                 except (BlockingIOError, OSError) as e:
                     err = getattr(e, "errno", None)
                     if err in (errno.ENOSYS, errno.EOPNOTSUPP, getattr(errno, "ENOTSUP", None), errno.EINVAL):
-                        print("[-] Предупреждение: файловая блокировка не поддерживается файловой системой.")
+                        print(f"[-] {t('lock_unsupported')}")
                         break
                     if time.time() - start > self.timeout:
                         try:
