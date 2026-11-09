@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.05.08] - 2026-11-10
+
+### Added
+- **GitHub Actions CI (`.github/workflows/ci.yml`)**: automated testing across Python 3.10, 3.11, and 3.12 with `pyflakes` linting and `pytest`.
+- **Linter & Lock Test Suite**: added `test_inter_process_lock` and `test_no_undefined_variables_linter` to verify zero undefined symbols across codebase.
+
+### Fixed
+- **Missing `import errno`**: added missing `import errno` to imports header, eliminating potential `NameError` on lock fallbacks.
+- **Immediate `.pid` Marker**: `staging.mkdir()` now writes `.pid` immediately before subfolder creation, closing any race condition window.
+- **Unused Imports Cleaned**: removed unused `random` import and redundant global declarations (verified 0 pyflakes warnings).
+- **README Phrasing**: balanced source guarantee descriptions.
+
+---
+
 ## [1.05.07] - 2026-11-10
 
 ### Fixed

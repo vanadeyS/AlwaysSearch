@@ -89,6 +89,46 @@ class TestCoreFunctions(unittest.TestCase):
             expected = sha_file.read_text(encoding="utf-8").strip().split()[0].lower()
             self.assertEqual(actual, expected, "r34_gallery.py.sha256 is out of sync with r34_gallery.py!")
 
+    def test_inter_process_lock(self):
+        import tempfile
+        import threading
+        with tempfile.TemporaryDirectory() as tmpdir:
+            lock_path = Path(tmpdir) / "test.lock"
+            with ns.InterProcessLock(lock_path) as lock:
+                self.assertIsNotNone(lock.fp)
+                self.assertTrue(lock_path.exists())
+                
+                # Test concurrent lock contention from another thread
+                timed_out = []
+                def try_second_lock():
+                    try:
+                        with ns.InterProcessLock(lock_path, timeout=0.2):
+                            pass
+                    except TimeoutError:
+                        timed_out.append(True)
+                
+                t = threading.Thread(target=try_second_lock)
+                t.start()
+                t.join(timeout=2.0)
+                self.assertEqual(len(timed_out), 1, "Second lock should time out when file is locked!")
+
+            # Lock released and cleaned up
+            self.assertIsNone(lock.fp)
+
+    def test_no_undefined_variables_linter(self):
+        try:
+            from pyflakes.api import checkPath
+            from pyflakes.reporter import Reporter
+            import io
+            root = Path(__file__).resolve().parent.parent
+            src_file = root / "r34_gallery.py"
+            out = io.StringIO()
+            err = io.StringIO()
+            warnings = checkPath(str(src_file), reporter=Reporter(out, err))
+            self.assertEqual(warnings, 0, f"Pyflakes lint errors in r34_gallery.py:\n{out.getvalue()}\n{err.getvalue()}")
+        except ImportError:
+            pass
+
 
 if __name__ == "__main__":
     unittest.main()

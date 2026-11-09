@@ -35,8 +35,8 @@
 
 ### 🚀 Быстрая установка (1 команда)
 
-> 💡 **Автономная настройка из проверенных источников:**  
-> Установщик полностью автономен: автоматически проверяет наличие необходимых компонентов, настраивает пути и загружает недостающие зависимости исключительно из **официальных проверенных источников** (Python — с сайта `python.org` или через `winget`; 7-Zip — с официального сайта `7-zip.org` или системных зеркал Termux; Python-библиотеки — из официального каталога PyPI). Никаких сторонних модификаций или непроверенных сборок.
+> 💡 **Автономная настройка из официальных источников:**  
+> Установщик автоматически проверяет наличие необходимых компонентов, настраивает пути и загружает недостающие зависимости из официальных источников (Python — с сайта `python.org` или через `winget`; 7-Zip — с официального сайта `7-zip.org` или зеркал Termux; Python-библиотеки — из PyPI).
 
 #### 🪟 На компьютере (Windows 10 / 11):
 > **Куда вставлять:** откройте **PowerShell**, **Командную строку (CMD)** или нажмите **Win + R**, вставьте и нажмите Enter:
@@ -118,8 +118,8 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 ### 🚀 Quick Install (1 command)
 
-> 💡 **Zero-Config Setup from Verified Sources:**  
-> The installer is completely autonomous: it automatically detects system requirements, creates appropriate folders, configures paths, and retrieves any missing dependencies exclusively from **official and verified sources** (Python from `python.org` / `winget`; 7-Zip from `7-zip.org` / official Termux package mirrors; Python libraries from official PyPI). No third-party builds or untrusted binaries are ever used.
+> 💡 **Zero-Config Setup from Official Sources:**  
+> The installer automatically detects system requirements, configures paths, and retrieves missing dependencies from official sources (Python via `python.org` / `winget`; 7-Zip via `7-zip.org` / official Termux mirrors; Python libraries via PyPI).
 
 #### 🪟 Windows PC (Windows 10 / 11):
 > **Where to paste:** open **PowerShell**, **Command Prompt (CMD)**, or press **Win + R**, paste and hit Enter:

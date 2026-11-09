@@ -8,6 +8,7 @@
 import base64
 import copy
 import ctypes
+import errno
 import getpass
 import hashlib
 import importlib
@@ -15,7 +16,6 @@ import importlib.util
 import json
 import py_compile
 import os
-import random
 import re
 import secrets as sec_mod
 import shutil
@@ -80,7 +80,7 @@ except ImportError:
     prompt = input
     Completer = Completion = ThreadedCompleter = Style = object
 
-VERSION = "1.05.07"
+VERSION = "1.05.08"
 UPDATE_URL = "https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/r34_gallery.py"
 AUTHOR = "vanadeyS"
 AUTHOR_GITHUB = "https://github.com/vanadeyS"
@@ -608,16 +608,17 @@ secrets = {
 }
 local = threading.local()
 class InterProcessLock:
-    def __init__(self, lock_file=None):
+    def __init__(self, lock_file=None, timeout=10):
         self.lock_file = Path(lock_file) if lock_file else get_vault_lock_path()
+        self.timeout = timeout
         self.fp = None
 
     def __enter__(self):
         self.lock_file.parent.mkdir(parents=True, exist_ok=True)
         self.fp = open(self.lock_file, "a+")
+        start = time.time()
         if os.name == "nt":
             import msvcrt
-            start = time.time()
             while True:
                 try:
                     self.fp.seek(0)
@@ -625,13 +626,18 @@ class InterProcessLock:
                     break
                 except OSError as e:
                     if getattr(e, "errno", None) not in (errno.EACCES, errno.EDEADLK):
+                        print("[-] Предупреждение: файловая блокировка не поддерживается файловой системой.")
                         break
-                    if time.time() - start > 10:
+                    if time.time() - start > self.timeout:
+                        try:
+                            self.fp.close()
+                        except Exception:
+                            pass
+                        self.fp = None
                         raise TimeoutError("Vault is locked by another process.")
-                    time.sleep(0.2)
+                    time.sleep(0.1)
         else:
             import fcntl
-            start = time.time()
             while True:
                 try:
                     fcntl.flock(self.fp.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -639,10 +645,16 @@ class InterProcessLock:
                 except (BlockingIOError, OSError) as e:
                     err = getattr(e, "errno", None)
                     if err in (errno.ENOSYS, errno.EOPNOTSUPP, getattr(errno, "ENOTSUP", None), errno.EINVAL):
+                        print("[-] Предупреждение: файловая блокировка не поддерживается файловой системой.")
                         break
-                    if time.time() - start > 10:
+                    if time.time() - start > self.timeout:
+                        try:
+                            self.fp.close()
+                        except Exception:
+                            pass
+                        self.fp = None
                         raise TimeoutError("Vault is locked by another process.")
-                    time.sleep(0.2)
+                    time.sleep(0.1)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
@@ -1285,12 +1297,13 @@ def download_tag(raw_tag, count, artist=False):
     if staging.exists():
         print(f"[-] {t('staging_busy')}")
         return
-    target_dir = staging / franchise / character
-    target_dir.mkdir(parents=True, exist_ok=True)
+    staging.mkdir(parents=True, exist_ok=True)
     try:
         (staging / ".pid").write_text(f"{os.getpid()}:{int(time.time())}", encoding="utf-8")
     except Exception:
         pass
+    target_dir = staging / franchise / character
+    target_dir.mkdir(parents=True, exist_ok=True)
     archive = vault_path()
     failed_dump = None
 
@@ -1975,7 +1988,7 @@ def ensure_launcher_command():
 
 
 def main():
-    global requests, prompt
+    global requests
     if requests is None or prompt is input:
         install_python_dependencies()
         import requests as _req
