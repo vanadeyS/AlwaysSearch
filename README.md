@@ -35,6 +35,9 @@
 
 ### 🚀 Быстрая установка (1 команда)
 
+> 💡 **Автономная настройка из проверенных источников:**  
+> Установщик полностью автономен: автоматически проверяет наличие необходимых компонентов, настраивает пути и загружает недостающие зависимости исключительно из **официальных проверенных источников** (Python — с сайта `python.org` или через `winget`; 7-Zip — с официального сайта `7-zip.org` или системных зеркал Termux; Python-библиотеки — из официального каталога PyPI). Никаких сторонних модификаций или непроверенных сборок.
+
 #### 🪟 На компьютере (Windows 10 / 11):
 > **Куда вставлять:** откройте **PowerShell**, **Командную строку (CMD)** или нажмите **Win + R**, вставьте и нажмите Enter:
 
@@ -42,7 +45,7 @@
 powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_windows.ps1 | iex"
 ```
 
-*(Работает одинаково в PowerShell, CMD и окне «Выполнить». Скрипт сам поставит Python 3.11, 7-Zip и зависимости)*
+*(Работает одинаково в PowerShell, CMD и окне «Выполнить». Скрипт сам создаст папки, настроит пути, установит Python, 7-Zip и зависимости)*
 
 #### 📱 На телефоне (Android):
 > **Куда вставлять:** откройте приложение **Termux** (на телефоне), вставьте и нажмите Enter:
@@ -57,7 +60,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 При первом старте NeverSearch запросит:
 1. **Выбор языка** интерфейса (`ru` или `en`).
-2. **Пароль хранилища** (по умолчанию `v1zhik`, рекомендуется сразу ввести свой).
+2. **Пароль хранилища**: генерация надёжного запоминающегося пароля Diceware (например `amber-frost-orbit-falcon-7429`) или ввод собственного.
 
 *Дальше при необходимости подключите API: команда `set` → пункт 3 (для Rule34 ключ не требуется, для Gelbooru обязателен).*
 
@@ -115,6 +118,9 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 ### 🚀 Quick Install (1 command)
 
+> 💡 **Zero-Config Setup from Verified Sources:**  
+> The installer is completely autonomous: it automatically detects system requirements, creates appropriate folders, configures paths, and retrieves any missing dependencies exclusively from **official and verified sources** (Python from `python.org` / `winget`; 7-Zip from `7-zip.org` / official Termux package mirrors; Python libraries from official PyPI). No third-party builds or untrusted binaries are ever used.
+
 #### 🪟 Windows PC (Windows 10 / 11):
 > **Where to paste:** open **PowerShell**, **Command Prompt (CMD)**, or press **Win + R**, paste and hit Enter:
 
@@ -122,7 +128,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 powershell -ep bypass -c "irm https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_windows.ps1 | iex"
 ```
 
-*(Works seamlessly in PowerShell, CMD, and Run dialog. Automatically installs Python 3.11, 7-Zip, and dependencies)*
+*(Works seamlessly in PowerShell, CMD, and Run dialog. Creates folders, configures paths, installs Python, 7-Zip, and dependencies)*
 
 #### 📱 Android Phone (Termux):
 > **Where to paste:** open the **Termux** app on your phone, paste and hit Enter:
@@ -137,7 +143,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 On the very first launch, NeverSearch will prompt for:
 1. **Interface language** (`ru` or `en`).
-2. **Vault password** (default is `v1zhik`, setting a custom one is recommended).
+2. **Vault password**: generate a memorable Diceware passphrase (e.g. `amber-frost-orbit-falcon-7429`) or set a custom one.
 
 *Optionally configure API keys afterwards: command `set` → option 3 (optional for Rule34, required for Gelbooru).*
 
