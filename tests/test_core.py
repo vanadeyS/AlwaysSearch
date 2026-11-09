@@ -85,7 +85,7 @@ class TestCoreFunctions(unittest.TestCase):
         src_file = root / "r34_gallery.py"
         sha_file = root / "r34_gallery.py.sha256"
         if src_file.is_file() and sha_file.is_file():
-            actual = hashlib.sha256(src_file.read_bytes()).hexdigest().lower()
+            actual = hashlib.sha256(src_file.read_bytes().replace(b"\r\n", b"\n")).hexdigest().lower()
             expected = sha_file.read_text(encoding="utf-8").strip().split()[0].lower()
             self.assertEqual(actual, expected, "r34_gallery.py.sha256 is out of sync with r34_gallery.py!")
 

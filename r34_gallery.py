@@ -1026,7 +1026,7 @@ def check_auto_update(silent=True):
                 try:
                     sha_resp = get(f"{UPDATE_URL}.sha256?t={int(time.time())}", headers={"Cache-Control": "no-cache"}, timeout=10)
                     expected_sha = sha_resp.text.strip().split()[0].lower()
-                    actual_sha = hashlib.sha256(response.content).hexdigest().lower()
+                    actual_sha = hashlib.sha256(response.content.replace(b'\r\n', b'\n')).hexdigest().lower()
                     if expected_sha and len(expected_sha) == 64:
                         if actual_sha == expected_sha:
                             sha_verified = True
