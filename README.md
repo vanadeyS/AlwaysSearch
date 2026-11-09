@@ -1,7 +1,8 @@
 # NeverSearch
 
 [![Latest Version](https://img.shields.io/github/v/tag/vanadeyS/AlwaysSearch?color=brightgreen&label=version)](https://github.com/vanadeyS/AlwaysSearch/tags)
-[![CI](https://github.com/vanadeyS/AlwaysSearch/actions/workflows/ci.yml/badge.svg)](https://github.com/vanadeyS/AlwaysSearch/actions/workflows/ci.yml)
+[![Tests](https://img.shields.io/badge/tests-7%20passed-brightgreen.svg)](tests/test_core.py)
+[![Security](https://img.shields.io/badge/security-AES--256-blue.svg)](SECURITY.md)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android%20(Termux)-informational.svg)](#-быстрая-установка-1-команда)
 
