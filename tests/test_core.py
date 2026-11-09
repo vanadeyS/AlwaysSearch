@@ -129,6 +129,11 @@ class TestCoreFunctions(unittest.TestCase):
         except ImportError:
             pass
 
+    def test_localization_keys_parity(self):
+        ru_keys = set(ns.TEXT["ru"])
+        en_keys = set(ns.TEXT["en"])
+        self.assertEqual(ru_keys, en_keys, f"Missing in ru: {en_keys - ru_keys}, missing in en: {ru_keys - en_keys}")
+
 
 if __name__ == "__main__":
     unittest.main()
