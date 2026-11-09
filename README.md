@@ -21,7 +21,7 @@
 
 ### Возможности
 
-- **Поиск**: по одиночным и составным тегам (`oguri_cap solo ass 20`), художникам (`artist <имя>`) и франшизам.
+- **Поиск**: по одиночным и составным тегам (`furina solo ass 20`), художникам (`artist <имя>`) и франшизам.
 - **Источники**: быстрое переключение между базами Rule34 и Gelbooru (`src [r34|gel]`).
 - **Черный список (Blacklist)**: отсечение нежелательного контента по тегам (`bl on/off/add/del/list/clear`, по умолчанию блокирует futanari, guro, scat).
 - **Режимы видео**: выгрузка только видеофайлов и анимаций (`video only`), совмещенный режим (`video on`) или только статичные арты (`video off`).
@@ -62,7 +62,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 | Команда | Описание |
 |---|---|
-| `<тег(и)> [N\|all]` | Скачать посты по тегам (например: `oguri_cap solo ass 20`) |
+| `<тег(и)> [N\|all]` | Скачать посты по тегам (например: `furina solo ass 20`) |
 | `artist <имя> [N\|all]` | Скачать работы указанного автора |
 | `src [r34\|gel]` | Переключить источник (Rule34 / Gelbooru) |
 | `bl [on\|off\|add\|del\|list\|clear]` | Управление черным списком (`clear` — полная очистка) |
@@ -81,7 +81,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 ### Хранилище
 
-- **Windows**: `%USERPROFILE%\Documents\NeverSearch\Bible.7z` (с обратной совместимостью с каталогом `umaZhickR34`)
+- **Windows**: `%USERPROFILE%\Documents\NeverSearch\Bible.7z` (с поддержкой миграции со старых версий)
 - **Android**: `/storage/emulated/0/Documents/NeverSearch/Bible.7z` (или fallback в `$HOME/storage/shared/Documents` / `~/Documents/NeverSearch`)
 - **Конфигурация**: `~/.r34_config.json` (в Windows защищен через DPAPI, в Termux правами `0600`).
 
@@ -100,7 +100,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 ### Features
 
-- **Search**: single and multi-tag queries (`oguri_cap solo ass 20`), artists (`artist <name>`), and franchises.
+- **Search**: single and multi-tag queries (`furina solo ass 20`), artists (`artist <name>`), and franchises.
 - **Engines**: fast switching between Rule34 and Gelbooru databases (`src [r34|gel]`).
 - **Tag Blacklist**: filter out unwanted content (`bl on/off/add/del/list/clear`, default blocks futanari, guro, scat).
 - **Video Modes**: download animations/videos exclusively (`video only`), images and videos (`video on`), or static images only (`video off`).
@@ -141,7 +141,7 @@ On the very first launch, NeverSearch will prompt you to:
 
 | Command | Description |
 |---|---|
-| `<tag(s)> [N\|all]` | Download posts by tags (e.g.: `oguri_cap solo ass 20`) |
+| `<tag(s)> [N\|all]` | Download posts by tags (e.g.: `furina solo ass 20`) |
 | `artist <name> [N\|all]` | Download works by specified artist |
 | `src [r34\|gel]` | Toggle search provider (Rule34 / Gelbooru) |
 | `bl [on\|off\|add\|del\|list\|clear]` | Manage tag blacklist (`clear` — purge all) |
@@ -160,6 +160,6 @@ On the very first launch, NeverSearch will prompt you to:
 
 ### Storage & Security
 
-- **Windows**: `%USERPROFILE%\Documents\NeverSearch\Bible.7z` (with backward compatibility for `umaZhickR34`)
+- **Windows**: `%USERPROFILE%\Documents\NeverSearch\Bible.7z` (with backward compatibility for legacy directories)
 - **Android**: `/storage/emulated/0/Documents/NeverSearch/Bible.7z` (or fallback to `$HOME/storage/shared/Documents` / `~/Documents/NeverSearch`)
 - **Settings**: `~/.r34_config.json` (secured via Windows DPAPI on Windows, file mode `0600` on Termux).
