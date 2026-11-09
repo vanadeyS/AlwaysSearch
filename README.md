@@ -4,15 +4,6 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android%20(Termux)-informational.svg)](#-быстрая-установка-1-команда)
 
-```text
-  ███╗  ██╗███████╗██╗   ██╗███████╗██████╗   ███████╗███████╗ █████╗ ██████╗  ██████╗██╗  ██╗
-  ████╗ ██║██╔════╝██║   ██║██╔════╝██╔══██╗  ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔════╝██║  ██║
-  ██╔██╗██║█████╗  ██║   ██║█████╗  ██████╔╝  ███████╗█████╗  ███████║██████╔╝██║     ███████║
-  ██║╚████║██╔══╝  ╚██╗ ██╔╝██╔══╝  ██╔══██╗  ╚════██║██╔══╝  ██╔══██║██╔══██╗██║     ██╔══██║
-  ██║ ╚███║███████╗ ╚████╔╝ ███████╗██║  ██║  ███████║███████╗██║  ██║██║  ██║╚██████╗██║  ██║
-  ╚═╝  ╚══╝╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝  ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
-```
-
 [ 🇷🇺 Русский ](#-русский) | [ 🇬🇧 English ](#-english)
 
 ---
@@ -23,6 +14,10 @@
 > ⚠️ **18+**: Программа предназначена исключительно для совершеннолетних. Ответственность за использование утилиты и скачиваемый контент лежит на пользователе.
 
 **NeverSearch** («Никогда не ищи», репозиторий *AlwaysSearch* / «Всегда ищи») — консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 и Gelbooru с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
+
+| 🪟 Windows (PowerShell / CMD) | 📱 Android (Termux) |
+|:---:|:---:|
+| <img src="assets/preview_win_ru.jpg" alt="NeverSearch Windows Console (RU)" width="100%" /> | <img src="assets/preview_termux_ru.jpg" alt="NeverSearch Android Termux (RU)" width="100%" /> |
 
 ### Возможности
 
@@ -98,6 +93,10 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 > ⚠️ **18+**: This application is strictly intended for adults. The user assumes all legal responsibility for usage and downloaded content.
 
 **NeverSearch** ("Never Search", repository *AlwaysSearch*) is a command-line client for batch searching and downloading media from Rule34 and Gelbooru, packaged automatically into an encrypted 7-Zip container (AES-256). Supports Windows (PowerShell/CMD) and Android (Termux).
+
+| 🪟 Windows (PowerShell / CMD) | 📱 Android (Termux) |
+|:---:|:---:|
+| <img src="assets/preview_win_en.jpg" alt="NeverSearch Windows Console (EN)" width="100%" /> | <img src="assets/preview_termux_en.jpg" alt="NeverSearch Android Termux (EN)" width="100%" /> |
 
 ### Features
 

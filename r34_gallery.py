@@ -644,10 +644,19 @@ def protect_secret(value):
 
 def save_cfg():
     CONFIG_PATH.parent.mkdir(parents=True, exist_ok=True)
+    existing = {}
+    try:
+        if CONFIG_PATH.is_file():
+            raw = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+            if isinstance(raw, dict):
+                existing = raw
+    except Exception:
+        pass
     stored = dict(cfg)
     stored.update({key: protect_secret(secret(key)) for key in secrets})
+    existing.update(stored)
     temporary = CONFIG_PATH.with_suffix(".tmp")
-    temporary.write_text(json.dumps(stored, ensure_ascii=False, indent=2), encoding="utf-8")
+    temporary.write_text(json.dumps(existing, ensure_ascii=False, indent=2), encoding="utf-8")
     os.replace(temporary, CONFIG_PATH)
     try:
         CONFIG_PATH.chmod(0o600)
