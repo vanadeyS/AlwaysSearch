@@ -1,8 +1,17 @@
 # NeverSearch
 
-[![Stable Release](https://img.shields.io/badge/version-v1.05.03-brightgreen.svg)](https://github.com/vanadeyS/AlwaysSearch/releases)
+[![Latest Release](https://img.shields.io/github/v/release/vanadeyS/AlwaysSearch?color=brightgreen)](https://github.com/vanadeyS/AlwaysSearch/releases)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android%20(Termux)-informational.svg)](#-быстрая-установка-1-команда)
+
+```text
+  ███╗  ██╗███████╗██╗   ██╗███████╗██████╗   ███████╗███████╗ █████╗ ██████╗  ██████╗██╗  ██╗
+  ████╗ ██║██╔════╝██║   ██║██╔════╝██╔══██╗  ██╔════╝██╔════╝██╔══██╗██╔══██╗██╔════╝██║  ██║
+  ██╔██╗██║█████╗  ██║   ██║█████╗  ██████╔╝  ███████╗█████╗  ███████║██████╔╝██║     ███████║
+  ██║╚████║██╔══╝  ╚██╗ ██╔╝██╔══╝  ██╔══██╗  ╚════██║██╔══╝  ██╔══██║██╔══██╗██║     ██╔══██║
+  ██║ ╚███║███████╗ ╚████╔╝ ███████╗██║  ██║  ███████║███████╗██║  ██║██║  ██║╚██████╗██║  ██║
+  ╚═╝  ╚══╝╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═╝  ╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
+```
 
 [ 🇷🇺 Русский ](#-русский) | [ 🇬🇧 English ](#-english)
 
@@ -11,9 +20,9 @@
 <a id="-русский"></a>
 ## 🇷🇺 Русский
 
-> **Текущая стабильная версия:** 1.05.03
+> ⚠️ **18+**: Программа предназначена исключительно для совершеннолетних. Ответственность за использование утилиты и скачиваемый контент лежит на пользователе.
 
-**NeverSearch** («Никогда не ищи») — консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 и Gelbooru с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
+**NeverSearch** («Никогда не ищи», репозиторий *AlwaysSearch* / «Всегда ищи») — консольный клиент для пакетного поиска и загрузки медиафайлов с Rule34 и Gelbooru с автоматической упаковкой в шифрованный контейнер 7-Zip (AES-256). Поддерживает Windows (PowerShell/CMD) и Android (Termux).
 
 ### Возможности
 
@@ -22,7 +31,7 @@
 - **Черный список (Blacklist)**: отсечение нежелательного контента по тегам (`bl on/off/add/del/list/clear`, по умолчанию блокирует futanari, guro, scat).
 - **Режимы видео**: выгрузка только видеофайлов и анимаций (`video only`), совмещенный режим (`video on`) или только статичные арты (`video off`).
 - **Фильтрация контента**: отсечение AI-генераций (`ai on/off`) и минимальный порог рейтинга (`score <N>`).
-- **Автоматическое шифрование**: сохранение в единый зашифрованный контейнер 7z (`-mhe=on`, пароль по умолчанию: `v1zhik`).
+- **Автоматическое шифрование**: сохранение в единый зашифрованный контейнер 7z (`-mhe=on`, пароль по умолчанию: `v1zhik`, настраивается при первом запуске или через меню `set`).
 - **Локальная дедупликация**: автоматический пропуск ранее скачанных постов по внутренней базе ID.
 - **Автодополнение**: интерактивные подсказки тегов по клавише `TAB`.
 - **Бесшовное OTA-обновление**: проверка и применение обновлений при запуске.
@@ -47,6 +56,13 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 *(Не вставлять эту команду в Windows! Она предназначена строго для Termux на Android)*
 
+### ⚙️ Первый запуск
+
+При самом первом старте NeverSearch последовательно предложит:
+1. **Выбрать язык** интерфейса (`ru` или `en`).
+2. **Задать пароль хранилища** (по умолчанию `v1zhik`, рекомендуется сразу ввести свой для надёжного шифрования).
+3. **Подключить API** (для Rule34 ключ не требуется, для Gelbooru обязателен — настраивается через меню `set` → пункт 3).
+
 ### Таблица команд
 
 | Команда | Описание |
@@ -54,7 +70,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 | `<тег(и)> [N\|all]` | Скачать посты по тегам (например: `oguri_cap solo ass 20`) |
 | `artist <имя> [N\|all]` | Скачать работы указанного автора |
 | `src [r34\|gel]` | Переключить источник (Rule34 / Gelbooru) |
-| `bl [on\|off\|add\|del\|list]` | Управление черным списком тегов |
+| `bl [on\|off\|add\|del\|list\|clear]` | Управление черным списком (`clear` — полная очистка) |
 | `video [on\|off\|only]` | Режимы загрузки видеофайлов (`only` — строго видео) |
 | `score <N>` | Порог минимального рейтинга |
 | `count <N>` | Лимит скачивания по умолчанию |
@@ -63,7 +79,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 | `set` | Меню конфигурации (язык, пароль, API Hook, черный список) |
 | `info` / `help` | Полная справка по хранилищу и синтаксису |
 | `update` | Проверка и установка OTA-обновлений |
-| `clean all` | Очистка рабочей папки |
+| `clean all` | Удаление ВСЕГО в рабочей папке (включая архив Bible.7z, требует подтверждения "DELETE") |
 | `theme [mono\|blue]` | Переключить цветовую палитру логотипа (Mono / Blue) |
 | `clear` / `cls` | Очистить экран |
 | `exit` / `q` | Выход из программы |
@@ -79,9 +95,9 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 <a id="-english"></a>
 ## 🇬🇧 English
 
-> **Current Stable Version:** 1.05.03
+> ⚠️ **18+**: This application is strictly intended for adults. The user assumes all legal responsibility for usage and downloaded content.
 
-**NeverSearch** ("Never Search") is a command-line client for batch searching and downloading media from Rule34 and Gelbooru, packaged automatically into an encrypted 7-Zip container (AES-256). Supports Windows (PowerShell/CMD) and Android (Termux).
+**NeverSearch** ("Never Search", repository *AlwaysSearch*) is a command-line client for batch searching and downloading media from Rule34 and Gelbooru, packaged automatically into an encrypted 7-Zip container (AES-256). Supports Windows (PowerShell/CMD) and Android (Termux).
 
 ### Features
 
@@ -90,7 +106,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 - **Tag Blacklist**: filter out unwanted content (`bl on/off/add/del/list/clear`, default blocks futanari, guro, scat).
 - **Video Modes**: download animations/videos exclusively (`video only`), images and videos (`video on`), or static images only (`video off`).
 - **Filters**: AI generator suppression (`ai on/off`) and minimum score threshold (`score <N>`).
-- **Container Encryption**: all files are packed into a single AES-256 7z archive (`-mhe=on`, default password: `v1zhik`).
+- **Container Encryption**: all files are packed into a single AES-256 7z archive (`-mhe=on`, default password: `v1zhik`, customizable on first start or via `set`).
 - **Deduplication**: previously saved posts are automatically skipped using internal ID caching.
 - **Autocomplete**: real-time tag completions triggered via `TAB`.
 - **Seamless OTA**: automatic version check and update on startup.
@@ -115,6 +131,13 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 
 *(Do not run this command on Windows! It is exclusively for Termux on Android)*
 
+### ⚙️ First Run
+
+On the very first launch, NeverSearch will prompt you to:
+1. **Select interface language** (`ru` or `en`).
+2. **Set vault password** (default is `v1zhik`, setting a custom one is highly recommended).
+3. **Configure API credentials** (Rule34 does not require a key; Gelbooru requires credentials via `set` menu → option 3).
+
 ### Command Reference
 
 | Command | Description |
@@ -122,7 +145,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 | `<tag(s)> [N\|all]` | Download posts by tags (e.g.: `oguri_cap solo ass 20`) |
 | `artist <name> [N\|all]` | Download works by specified artist |
 | `src [r34\|gel]` | Toggle search provider (Rule34 / Gelbooru) |
-| `bl [on\|off\|add\|del\|list]` | Manage tag blacklist |
+| `bl [on\|off\|add\|del\|list\|clear]` | Manage tag blacklist (`clear` — purge all) |
 | `video [on\|off\|only]` | Video download mode (`only` — exclusively videos) |
 | `score <N>` | Set minimum score threshold |
 | `count <N>` | Set default batch limit |
@@ -131,7 +154,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 | `set` | Settings menu (language, vault password, API Hook, blacklist) |
 | `info` / `help` | Manual for storage hierarchy, formats, and syntax |
 | `update` | Check and apply OTA updates |
-| `clean all` | Purge working directory |
+| `clean all` | Deletes EVERYTHING in storage folder (including Bible.7z archive, requires "DELETE" confirmation) |
 | `theme [mono\|blue]` | Switch logo color palette (Mono / Blue) |
 | `clear` / `cls` | Clear terminal screen |
 | `exit` / `q` | Exit application |
