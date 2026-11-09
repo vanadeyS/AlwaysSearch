@@ -1,6 +1,7 @@
 # NeverSearch
 
-[![Latest Version](https://img.shields.io/github/v/tag/vanadeyS/AlwaysSearch?color=brightgreen&label=version)](https://github.com/vanadeyS/AlwaysSearch/releases)
+[![Latest Version](https://img.shields.io/github/v/tag/vanadeyS/AlwaysSearch?color=brightgreen&label=version)](https://github.com/vanadeyS/AlwaysSearch/tags)
+[![CI](https://github.com/vanadeyS/AlwaysSearch/actions/workflows/ci.yml/badge.svg)](https://github.com/vanadeyS/AlwaysSearch/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android%20(Termux)-informational.svg)](#-быстрая-установка-1-команда)
 
@@ -26,7 +27,7 @@
 - **Черный список (Blacklist)**: отсечение нежелательного контента по тегам (`bl on/off/add/del/list/clear`, по умолчанию блокирует futanari, guro, scat).
 - **Режимы видео**: выгрузка только видеофайлов и анимаций (`video only`), совмещенный режим (`video on`) или только статичные арты (`video off`).
 - **Фильтрация контента**: отсечение AI-генераций (`ai on/off`) и минимальный порог рейтинга (`score <N>`).
-- **Автоматическое шифрование**: сохранение в единый зашифрованный контейнер 7z (`-mhe=on`, пароль по умолчанию: `v1zhik`, настраивается при первом запуске или через меню `set`).
+- **Автоматическое шифрование**: сохранение в единый зашифрованный контейнер 7z (AES-256, `-mhe=on`). Пароль задается при первом запуске или генерируется в простом запоминающемся формате (например `star-449`), с просмотром и экспортом памятки через меню `set` -> 2.
 - **Локальная дедупликация**: автоматический пропуск ранее скачанных постов по внутренней базе ID.
 - **Автодополнение**: интерактивные подсказки тегов по клавише `TAB`.
 - **Бесшовное OTA-обновление**: проверка и применение обновлений при запуске.
@@ -106,7 +107,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 - **Tag Blacklist**: filter out unwanted content (`bl on/off/add/del/list/clear`, default blocks futanari, guro, scat).
 - **Video Modes**: download animations/videos exclusively (`video only`), images and videos (`video on`), or static images only (`video off`).
 - **Filters**: AI generator suppression (`ai on/off`) and minimum score threshold (`score <N>`).
-- **Container Encryption**: all files are packed into a single AES-256 7z archive (`-mhe=on`, default password: `v1zhik`, customizable on first start or via `set`).
+- **Container Encryption**: all files are packed into a single AES-256 7z archive (`-mhe=on`). Password is user-defined or auto-generated in a memorable format (e.g. `star-449`) on first start, with in-app reveal and backup note export via `set` -> 2.
 - **Deduplication**: previously saved posts are automatically skipped using internal ID caching.
 - **Autocomplete**: real-time tag completions triggered via `TAB`.
 - **Seamless OTA**: automatic version check and update on startup.
