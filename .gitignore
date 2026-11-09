@@ -10,3 +10,12 @@ __pycache__/
 error.log
 _staging/
 .venv/
+
+# Sensitive & Personal Credentials (NEVER COMMIT)
+*recovery*
+*token*
+*.ms
+*.txt.bak
+vault_password_backup.txt
+.admin_token
+*.log
