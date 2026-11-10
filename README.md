@@ -69,7 +69,7 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 > - **Rule34**: По умолчанию работает без ключа, но при активном скачивании, использовании VPN или публичных сетей сервер Rule34 включает защиту от ботов и требует API-ключ.
 > 
 > **Как подключить в 1 клик (бесплатно, 1 минута):**
-> 1. Войдите в свой аккаунт на сайте источника (на обоих сайтах путь одинаковый):
+> 1. Войдите в свой аккаунт на сайте источника ([rule34.xxx](https://rule34.xxx) или [gelbooru.com](https://gelbooru.com)):
 >    - Меню аккаунта → **Options** → блок **API Access Credentials**.
 > 2. Скопируйте **всё содержимое текстового поля целиком** (строку вида `&api_key=...&user_id=...`).
 > 3. В **NeverSearch**:
@@ -167,7 +167,7 @@ On the very first launch, NeverSearch will prompt for:
 > - **Rule34**: Works without credentials initially, but batch scraping, VPNs, or datacenter IPs trigger bot protection and require an API key.
 > 
 > **How to connect in 1 click (free, 1 minute):**
-> 1. Sign in to your account on the provider's website (identical path on both):
+> 1. Sign in to your account on the provider's website ([rule34.xxx](https://rule34.xxx) or [gelbooru.com](https://gelbooru.com)):
 >    - Account menu → **Options** → **API Access Credentials** section.
 > 2. Copy **the entire text box content** (the whole string formatted as `&api_key=...&user_id=...`).
 > 3. In **NeverSearch**:
