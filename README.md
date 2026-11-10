@@ -68,13 +68,14 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 > - **Gelbooru**: **Строго требует** подключения API (без ключа сервис блокирует пагинацию и скачивание).
 > - **Rule34**: По умолчанию работает без ключа, но при активном скачивании, использовании VPN или публичных сетей сервер Rule34 включает защиту от ботов и требует API-ключ.
 > 
-> **Как получить и привязать ключи (бесплатно, 1 минута):**
-> 1. **Rule34**: Войдите на [rule34.xxx](https://rule34.xxx) → `My Account` → `Manage API Keys` → скопируйте `api_key` и числовой `user_id`.
-> 2. **Gelbooru**: Войдите на [gelbooru.com](https://gelbooru.com) → `Options` → `API Access / Key` → скопируйте `User ID` и `API Key`.
+> **Как подключить в 1 клик (бесплатно, 1 минута):**
+> 1. Войдите в свой аккаунт на сайте источника (на обоих сайтах путь одинаковый):
+>    - Меню аккаунта → **Options** → блок **API Access Credentials**.
+> 2. Скопируйте **всё содержимое текстового поля целиком** (строку вида `&api_key=...&user_id=...`).
 > 3. В **NeverSearch**:
->    - Переключитесь на нужный источник: `src r34` или `src gel`.
+>    - Переключите источник при необходимости (`src r34` или `src gel`).
 >    - Введите `set` → выберите пункт `3. API Hook`.
->    - Вставьте строку: `api_key=ВАШ_КЛЮЧ&user_id=ВАШ_ID` (поддерживается и ввод отдельно).
+>    - Вставьте скопированную строку целиком — программа автоматически распознает и сохранит ключи.
 > 
 > Все ключи шифруются локально (Windows DPAPI / режим доступа 0600 в Termux).
 
@@ -165,13 +166,14 @@ On the very first launch, NeverSearch will prompt for:
 > - **Gelbooru**: **Strictly requires** API credentials (unauthenticated requests are blocked by the provider).
 > - **Rule34**: Works without credentials initially, but batch scraping, VPNs, or datacenter IPs trigger bot protection and require an API key.
 > 
-> **How to get and connect free API credentials (1 minute):**
-> 1. **Rule34**: Sign in to [rule34.xxx](https://rule34.xxx) → `My Account` → `Manage API Keys` → copy `api_key` and numeric `user_id`.
-> 2. **Gelbooru**: Sign in to [gelbooru.com](https://gelbooru.com) → `Options` → `API Access / Key` → copy `User ID` and `API Key`.
+> **How to connect in 1 click (free, 1 minute):**
+> 1. Sign in to your account on the provider's website (identical path on both):
+>    - Account menu → **Options** → **API Access Credentials** section.
+> 2. Copy **the entire text box content** (the whole string formatted as `&api_key=...&user_id=...`).
 > 3. In **NeverSearch**:
->    - Switch to desired provider: `src r34` or `src gel`.
+>    - Switch provider if needed (`src r34` or `src gel`).
 >    - Type `set` → select option `3. API Hook`.
->    - Paste string: `api_key=YOUR_KEY&user_id=YOUR_ID` (or enter key and id separately).
+>    - Paste the copied string as is — the application will automatically parse and store your credentials.
 > 
 > All credentials are encrypted locally (Windows DPAPI / POSIX 0600 on Termux).
 
