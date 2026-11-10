@@ -62,7 +62,21 @@ curl -sLO https://raw.githubusercontent.com/vanadeyS/AlwaysSearch/main/install_t
 1. **Выбор языка** интерфейса (`ru` или `en`).
 2. **Пароль хранилища**: генерация надёжного запоминающегося пароля Diceware (например `amber-frost-orbit-falcon-7429`) или ввод собственного.
 
-*Дальше при необходимости подключите API: команда `set` → пункт 3 (для Rule34 ключ не требуется, для Gelbooru обязателен).*
+### 🔑 Подключение API (Ключи доступа)
+
+> ⚠️ **Важно для работы и загрузки:**
+> - **Gelbooru**: **Строго требует** подключения API (без ключа сервис блокирует пагинацию и скачивание).
+> - **Rule34**: По умолчанию работает без ключа, но при активном скачивании, использовании VPN или публичных сетей сервер Rule34 включает защиту от ботов и требует API-ключ.
+> 
+> **Как получить и привязать ключи (бесплатно, 1 минута):**
+> 1. **Rule34**: Войдите на [rule34.xxx](https://rule34.xxx) → `My Account` → `Manage API Keys` → скопируйте `api_key` и числовой `user_id`.
+> 2. **Gelbooru**: Войдите на [gelbooru.com](https://gelbooru.com) → `Options` → `API Access / Key` → скопируйте `User ID` и `API Key`.
+> 3. В **NeverSearch**:
+>    - Переключитесь на нужный источник: `src r34` или `src gel`.
+>    - Введите `set` → выберите пункт `3. API Hook`.
+>    - Вставьте строку: `api_key=ВАШ_КЛЮЧ&user_id=ВАШ_ID` (поддерживается и ввод отдельно).
+> 
+> Все ключи шифруются локально (Windows DPAPI / режим доступа 0600 в Termux).
 
 ### Таблица команд
 
@@ -145,7 +159,21 @@ On the very first launch, NeverSearch will prompt for:
 1. **Interface language** (`ru` or `en`).
 2. **Vault password**: generate a memorable Diceware passphrase (e.g. `amber-frost-orbit-falcon-7429`) or set a custom one.
 
-*Optionally configure API keys afterwards: command `set` → option 3 (optional for Rule34, required for Gelbooru).*
+### 🔑 API Access Keys Setup
+
+> ⚠️ **Important for Downloading:**
+> - **Gelbooru**: **Strictly requires** API credentials (unauthenticated requests are blocked by the provider).
+> - **Rule34**: Works without credentials initially, but batch scraping, VPNs, or datacenter IPs trigger bot protection and require an API key.
+> 
+> **How to get and connect free API credentials (1 minute):**
+> 1. **Rule34**: Sign in to [rule34.xxx](https://rule34.xxx) → `My Account` → `Manage API Keys` → copy `api_key` and numeric `user_id`.
+> 2. **Gelbooru**: Sign in to [gelbooru.com](https://gelbooru.com) → `Options` → `API Access / Key` → copy `User ID` and `API Key`.
+> 3. In **NeverSearch**:
+>    - Switch to desired provider: `src r34` or `src gel`.
+>    - Type `set` → select option `3. API Hook`.
+>    - Paste string: `api_key=YOUR_KEY&user_id=YOUR_ID` (or enter key and id separately).
+> 
+> All credentials are encrypted locally (Windows DPAPI / POSIX 0600 on Termux).
 
 ### Command Reference
 

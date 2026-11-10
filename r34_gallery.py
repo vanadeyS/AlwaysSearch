@@ -376,6 +376,7 @@ TEXT = {
         "scanning_pages": "Поиск постов [стр. {page} | отобрано {count}/{limit}]...", 
         "auth_required": "Требуется привязать {provider} API (api_key и user_id) в меню 'set' (пункт 3).",
         "gelbooru_auth_hint": "Для Gelbooru API требуются api_key и user_id в меню 'set' (пункт 3).",
+        "r34_auth_hint": "Для стабильной работы и снятия лимитов Rule34 привяжите api_key и user_id в меню 'set' (пункт 3).",
         "installed_path": "Путь",
         "stats_summary": "Всего: {total} | В хранилище: {known} | Доступно: {available}",
         "bl_updated": "Черный список: {tags}",
@@ -499,6 +500,7 @@ TEXT = {
         "scanning_pages": "Scanning posts [page {page} | found {count}/{limit}]...", 
         "auth_required": "Authentication required: configure {provider} API (api_key & user_id) in 'set' menu (item 3).",
         "gelbooru_auth_hint": "Gelbooru API requires api_key and user_id in 'set' menu (item 3).",
+        "r34_auth_hint": "To lift rate limits and ensure stable Rule34 downloads, configure api_key and user_id in 'set' menu (item 3).",
         "installed_path": "Path",
         "stats_summary": "Total: {total} | In vault: {known} | Available: {available}",
         "bl_updated": "Blacklist: {tags}",
@@ -1268,6 +1270,10 @@ def download_tag(raw_tag, count, artist=False):
         sys.stdout.flush()
         if root.tag == "error":
             print(f"[-] {t('auth_required', provider=provider['name'])}")
+            if provider["name"] == "Gelbooru":
+                print(f"[*] {t('gelbooru_auth_hint')}")
+            else:
+                print(f"[*] {t('r34_auth_hint')}")
             time.sleep(2)
             return
         total = int(root.get("count", "0"))
@@ -1277,6 +1283,8 @@ def download_tag(raw_tag, count, artist=False):
         print(f"[-] {t('api_err', provider=provider['name'])}")
         if provider["name"] == "Gelbooru" and not (secret("gel_api_key") and secret("gel_user_id")):
             print(f"[*] {t('gelbooru_auth_hint')}")
+        elif provider["name"] == "Rule34" and not (secret("api_key") and secret("user_id")):
+            print(f"[*] {t('r34_auth_hint')}")
         return
     if not total:
         if cfg.get("min_score", 0) > 0:
